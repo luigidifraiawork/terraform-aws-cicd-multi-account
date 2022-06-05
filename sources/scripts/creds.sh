@@ -6,9 +6,6 @@
 #Default flags to false
 USER_DEFINED_ACCOUNT=false
 AFT=false
-CT=false
-AUDIT=false
-LOG_ARCHIVE=false
 
 #Ensure at option was specified
 if [ $# -eq 0 ]; then
@@ -28,15 +25,6 @@ do
       ;;
     --aft-mgmt)
       AFT=true
-      ;;
-    --ct-mgmt)
-      CT=true
-      ;;
-    --ct-audit)
-      AUDIT=true
-      ;;
-    --ct-log-archive)
-      LOG_ARCHIVE=true
       ;;
     --help)
       echo ""
@@ -65,7 +53,7 @@ ROLE_SESSION_NAME=$(aws ssm get-parameter --name /aft/resources/iam/aft-session-
 AFT_MGMT_ACCOUNT=$(aws ssm get-parameter --name /aft/account/aft-management/account-id | jq --raw-output ".Parameter.Value")
 
 # Assume aws-aft-AdministratorRole in AFT Management account
-if $USER_DEFINED_ACCOUNT || $AFT || $CT || $AUDIT || $LOG_ARCHIVE; then
+if $USER_DEFINED_ACCOUNT || $AFT; then
   echo "Assuming ${AFT_MGMT_ROLE} in aft-management account:" ${AFT_MGMT_ACCOUNT}
   echo "aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
   JSON=$(aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME})
@@ -98,7 +86,7 @@ if $AFT; then
 fi
 
 # Unset env vars if any work was performed
-if $USER_DEFINED_ACCOUNT || $AFT || $CT; then
+if $USER_DEFINED_ACCOUNT || $AFT; then
   unset AWS_ACCESS_KEY_ID
   unset AWS_SECRET_ACCESS_KEY
   unset AWS_SESSION_TOKEN
