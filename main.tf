@@ -97,3 +97,15 @@ module "aft_ssm_parameters" {
   account_customizations_repo_branch                          = var.account_customizations_repo_branch
   github_enterprise_url                                       = var.github_enterprise_url
 }
+
+module "aft_pipelines" {
+  providers = {
+    aws = aws.aft_management
+  }
+  source                = "./modules/aft-pipelines"
+  for_each              = var.account_customizations_config
+  account_id            = each.value["account_id"]
+  customizations_folder = each.value["customizations_folder"]
+  vcs_provider          = var.vcs_provider
+  depends_on            = [module.aft_account_request_framework, module.aft_customizations, module.aft_iam_roles, module.aft_ssm_parameters]
+}

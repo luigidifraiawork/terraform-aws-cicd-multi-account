@@ -39,7 +39,6 @@ phases:
       - python3 -m venv ./venv
       - source ./venv/bin/activate
       - pip install jinja2-cli==0.7.0 Jinja2==3.0.1 MarkupSafe==2.0.1 boto3==1.18.56 requests==2.26.0
-      - CUSTOMIZATION=$VENDED_ACCOUNT_ID-customizations
       - echo $CUSTOMIZATION
       - |
         if [ -d "$CUSTOMIZATION" ]; then
