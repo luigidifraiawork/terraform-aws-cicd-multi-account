@@ -61,6 +61,13 @@ module "aft_customizations" {
   global_codebuild_timeout                          = var.global_codebuild_timeout
 }
 
+module "aft_iam_roles" {
+  source = "./modules/aft-iam-roles"
+  providers = {
+    aws.aft_management = aws.aft_management
+  }
+}
+
 module "aft_ssm_parameters" {
   providers = {
     aws = aws.aft_management

@@ -28,7 +28,7 @@ do
       ;;
     --help)
       echo ""
-      echo "creds.sh creates an AWS CLI credential file leveraging AWSAFTExecutionRole for specified accounts"
+      echo "creds.sh creates an AWS CLI credential file leveraging the AWSCICDExecution role for specified accounts"
       echo ""
       echo "** creds.sh should be run from the AFT Management account with a role that can assume aws-aft-AdministratorRole **"
       echo ""
@@ -64,7 +64,7 @@ if $USER_DEFINED_ACCOUNT || $AFT; then
 fi
 
 if $USER_DEFINED_ACCOUNT; then
-# Assume AWSAFTExecution in User Defined account
+# Assume AWSCICDExecution in User Defined account
   echo "aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
   JSON=$(aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME})
   echo "[default]" >> ~/.aws/credentials
@@ -74,7 +74,7 @@ if $USER_DEFINED_ACCOUNT; then
 fi
 
 if $AFT; then
-# Assume AWSAFTExecution in AFT Management account
+# Assume AWSCICDExecution in AFT Management account
   echo "Assuming ${AFT_EXECUTION_ROLE} in aft-management account:" ${AFT_MGMT_ACCOUNT}
   echo "aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
   JSON=$(aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME})

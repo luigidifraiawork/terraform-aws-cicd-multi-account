@@ -84,7 +84,7 @@
         "sts:AssumeRole"
       ],
       "Resource": [
-        "arn:aws:iam::${data_aws_caller_identity_current_account_id}:role/AWSAFTAdmin"
+        "arn:aws:iam::${data_aws_caller_identity_current_account_id}:role/AWSCICDAdmin"
       ]
     },
       {
