@@ -64,6 +64,7 @@ module "aft_customizations" {
 module "aft_iam_roles" {
   source = "./modules/aft-iam-roles"
   providers = {
+    aws.ct_management  = aws.ct_management
     aws.aft_management = aws.aft_management
   }
 }
