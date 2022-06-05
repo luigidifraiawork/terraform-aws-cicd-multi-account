@@ -34,6 +34,18 @@ variable "terraform_org_name" {
   type = string
 }
 
+variable "aft_execution_role_name" {
+  type = string
+}
+
+variable "aft_administrator_role_name" {
+  type = string
+}
+
+variable "aft_session_name" {
+  type = string
+}
+
 variable "aft_config_backend_bucket_id" {
   type = string
 }

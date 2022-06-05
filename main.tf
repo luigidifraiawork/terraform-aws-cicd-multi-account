@@ -70,6 +70,9 @@ module "aft_ssm_parameters" {
   aft_config_backend_bucket_id                                = module.aft_backend.bucket_id
   aft_config_backend_table_id                                 = module.aft_backend.table_id
   aft_config_backend_kms_key_id                               = module.aft_backend.kms_key_id
+  aft_administrator_role_name                                 = local.aft_administrator_role_name
+  aft_execution_role_name                                     = local.aft_execution_role_name
+  aft_session_name                                            = local.aft_session_name
   aft_management_account_id                                   = var.aft_management_account_id
   ct_primary_region                                           = var.ct_home_region
   tf_version                                                  = var.terraform_version

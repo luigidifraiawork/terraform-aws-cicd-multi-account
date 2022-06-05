@@ -49,6 +49,24 @@ resource "aws_ssm_parameter" "terraform_org_name" {
   value = var.terraform_org_name
 }
 
+resource "aws_ssm_parameter" "aft_execution_role_name" {
+  name  = "/aft/resources/iam/aft-execution-role-name"
+  type  = "String"
+  value = var.aft_execution_role_name
+}
+
+resource "aws_ssm_parameter" "aft_administrator_role_name" {
+  name  = "/aft/resources/iam/aft-administrator-role-name"
+  type  = "String"
+  value = var.aft_administrator_role_name
+}
+
+resource "aws_ssm_parameter" "aft_session_name" {
+  name  = "/aft/resources/iam/aft-session-name"
+  type  = "String"
+  value = var.aft_session_name
+}
+
 resource "aws_ssm_parameter" "aft_config_backend_bucket_id" {
   name  = "/aft/config/oss-backend/bucket-id"
   type  = "String"

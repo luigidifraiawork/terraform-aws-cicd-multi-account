@@ -4,6 +4,8 @@
 locals {
   aft_version                                      = chomp(trimspace(data.local_file.version.content))
   aft_framework_repo_git_ref                       = var.aft_framework_repo_git_ref == null || var.aft_framework_repo_git_ref == "" ? local.aft_version : var.aft_framework_repo_git_ref
+  aft_execution_role_name                          = "AWSAFTExecution"
+  aft_administrator_role_name                      = "AWSAFTAdmin"
   aft_session_name                                 = "AWSAFT-Session"
   ssm_paths = {
     aft_tf_aws_customizations_module_url_ssm_path     = "/aft/config/aft-pipeline-code-source/repo-url"
