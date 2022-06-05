@@ -32,7 +32,7 @@ do
       echo ""
       echo "** creds.sh should be run from the AFT Management account with a role that can assume aws-aft-AdministratorRole **"
       echo ""
-      echo "usage: creds.sh [--account account_id] [--ct-mgmt] [--aft-mgmt]"
+      echo "usage: creds.sh [--account account_id] [--aft-mgmt]"
       echo ""
       echo "--account-id - Create a default credential profile for the given account number.   Profile name: default"
       echo "--aft-mgmt   - Create a credential profile for AFT Management account.             Profile name: aft-management"
