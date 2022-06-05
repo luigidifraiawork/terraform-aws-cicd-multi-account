@@ -39,8 +39,7 @@ phases:
       - python3 -m venv ./venv
       - source ./venv/bin/activate
       - pip install jinja2-cli==0.7.0 Jinja2==3.0.1 MarkupSafe==2.0.1 boto3==1.18.56 requests==2.26.0
-      - |
-        CUSTOMIZATION=$(aws dynamodb get-item --table-name aft-request-metadata --key "{\"id\": {\"S\": \"$VENDED_ACCOUNT_ID\"}}" --attributes-to-get "account_customizations_name" | jq --raw-output ".Item.account_customizations_name.S")
+      - CUSTOMIZATION=$VENDED_ACCOUNT_ID-customizations
       - echo $CUSTOMIZATION
       - |
         if [ -d "$CUSTOMIZATION" ]; then
