@@ -65,14 +65,3 @@ variable "aft_account_customizations_terraform_codebuild_name" {
   default     = "aft-account-customizations-terraform"
 }
 
-variable "aft_global_customizations_api_helpers_codebuild_name" {
-  type        = string
-  description = "CodeBuild Project Name"
-  default     = "aft-global-customizations-api-helpers"
-}
-
-variable "aft_global_customizations_terraform_codebuild_name" {
-  type        = string
-  description = "CodeBuild Project Name"
-  default     = "aft-global-customizations-terraform"
-}
