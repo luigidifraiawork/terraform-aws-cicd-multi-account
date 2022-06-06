@@ -7,13 +7,13 @@ provider "aws" {
   # The default profile or environment variables should authenticate to the Control Tower Management Account as Administrator
   default_tags {
     tags = {
-      managed_by = "AFT"
+      managed_by = "CICD"
     }
   }
 }
 
 provider "aws" {
-  alias  = "aft_management"
+  alias  = "cicd_management"
   region = var.ct_home_region
   assume_role {
     role_arn     = "arn:aws:iam::${var.cicd_management_account_id}:role/AWSControlTowerExecution"
@@ -21,7 +21,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      managed_by = "AFT"
+      managed_by = "CICD"
     }
   }
 }
@@ -35,7 +35,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      managed_by = "AFT"
+      managed_by = "CICD"
     }
   }
 }

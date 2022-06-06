@@ -5,7 +5,7 @@
 # General AFT Vars
 #########################################
 
-output "aft_management_account_id" {
+output "cicd_management_account_id" {
   value = var.cicd_management_account_id
 }
 
