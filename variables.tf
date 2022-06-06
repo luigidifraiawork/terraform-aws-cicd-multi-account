@@ -113,6 +113,18 @@ variable "account_customizations_repo_branch" {
 }
 
 #########################################
+# AFT Account Variables
+#########################################
+
+variable "account_customizations_config" {
+  description = "Map of objects for per account configuration"
+  type        = map(object({
+    account_id            = string
+    customizations_folder = string
+  }))
+}
+
+#########################################
 # AFT Terraform Distribution Variables
 #########################################
 

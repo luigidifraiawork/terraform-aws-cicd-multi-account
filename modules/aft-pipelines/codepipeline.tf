@@ -62,6 +62,11 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
             type  = "PLAINTEXT"
           },
           {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
+            type  = "PLAINTEXT"
+          },
+          {
             name  = "SHELL_SCRIPT",
             value = "pre-api-helpers.sh",
             type  = "PLAINTEXT"
@@ -85,6 +90,11 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
             name  = "VENDED_ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
+          },
+          {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
+            type  = "PLAINTEXT"
           }
         ])
       }
@@ -104,6 +114,11 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
           {
             name  = "VENDED_ACCOUNT_ID",
             value = var.account_id,
+            type  = "PLAINTEXT"
+          },
+          {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
             type  = "PLAINTEXT"
           },
           {
@@ -180,6 +195,11 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
             type  = "PLAINTEXT"
           },
           {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
+            type  = "PLAINTEXT"
+          },
+          {
             name  = "SHELL_SCRIPT",
             value = "pre-api-helpers.sh",
             type  = "PLAINTEXT"
@@ -203,6 +223,11 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
             name  = "VENDED_ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
+          },
+          {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
+            type  = "PLAINTEXT"
           }
         ])
       }
@@ -222,6 +247,11 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
           {
             name  = "VENDED_ACCOUNT_ID",
             value = var.account_id,
+            type  = "PLAINTEXT"
+          },
+          {
+            name  = "CUSTOMIZATION",
+            value = var.customizations_folder,
             type  = "PLAINTEXT"
           },
           {

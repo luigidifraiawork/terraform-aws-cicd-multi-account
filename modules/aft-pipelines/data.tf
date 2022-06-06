@@ -5,10 +5,6 @@ data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
-data "aws_ssm_parameter" "vcs_provider" {
-  name = "/aft/config/vcs/provider"
-}
-
 data "aws_ssm_parameter" "codestar_connection_arn" {
   name = "/aft/config/vcs/codestar-connection-arn"
 }

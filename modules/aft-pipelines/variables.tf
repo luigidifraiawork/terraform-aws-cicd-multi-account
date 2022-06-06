@@ -3,12 +3,23 @@
 #
 locals {
   vcs = {
-    is_codecommit = lower(data.aws_ssm_parameter.vcs_provider.value) == "codecommit" ? true : false
+    is_codecommit = lower(var.vcs_provider) == "codecommit" ? true : false
   }
 }
+
 variable "account_id" {
   type        = string
   description = "Account ID for which the pipeline is being created"
+}
+
+variable "customizations_folder" {
+  type        = string
+  description = "Customization folder for which the pipeline is being created"
+}
+
+variable "vcs_provider" {
+  description = "Customer VCS Provider - valid inputs are codecommit, bitbucket, github, or githubenterprise"
+  type        = string
 }
 
 variable "aft_account_customizations_api_helpers_codebuild_name" {
