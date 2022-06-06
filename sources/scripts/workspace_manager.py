@@ -166,7 +166,7 @@ def set_terraform_variables(workspace_id, input_variables, api_token):
             terraform.set_environment_variable(
                 key,
                 value,
-                "Terraform input variable set by AFT",
+                "Terraform input variable set by CICD",
                 workspace_id,
                 False,
                 "terraform",
@@ -177,7 +177,7 @@ def set_terraform_variables(workspace_id, input_variables, api_token):
                 transformed_current_vars_dict[key],
                 key,
                 value,
-                "Terraform input variable set by AFT",
+                "Terraform input variable set by CICD",
                 workspace_id,
                 False,
                 "terraform",

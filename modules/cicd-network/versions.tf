@@ -8,7 +8,6 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = ">= 4.9.0"
-      configuration_aliases = [aws.ct_management, aws.cicd_management, aws.tf_backend_secondary_region]
     }
   }
 }

@@ -42,24 +42,24 @@ mkdir -p ~/.aws
 rm -f ~/.aws/credentials
 
 # Lookup SSM Parameters
-AFT_MGMT_ROLE=$(aws ssm get-parameter --name /aft/resources/iam/aft-administrator-role-name | jq --raw-output ".Parameter.Value")
-AFT_EXECUTION_ROLE=$(aws ssm get-parameter --name /aft/resources/iam/aft-execution-role-name | jq --raw-output ".Parameter.Value")
-ROLE_SESSION_NAME=$(aws ssm get-parameter --name /aft/resources/iam/aft-session-name | jq --raw-output ".Parameter.Value")
-AFT_MGMT_ACCOUNT=$(aws ssm get-parameter --name /aft/account/aft-management/account-id | jq --raw-output ".Parameter.Value")
+CICD_MGMT_ROLE=$(aws ssm get-parameter --name /cicd/resources/iam/cicd-administrator-role-name | jq --raw-output ".Parameter.Value")
+CICD_EXECUTION_ROLE=$(aws ssm get-parameter --name /cicd/resources/iam/cicd-execution-role-name | jq --raw-output ".Parameter.Value")
+ROLE_SESSION_NAME=$(aws ssm get-parameter --name /cicd/resources/iam/cicd-session-name | jq --raw-output ".Parameter.Value")
+CICD_MGMT_ACCOUNT=$(aws ssm get-parameter --name /cicd/account/cicd-management/account-id | jq --raw-output ".Parameter.Value")
 
 if $USER_DEFINED_ACCOUNT; then
-  # Assume AWSCICDAdmin in AFT Management account
-  echo "Assuming ${AFT_MGMT_ROLE} in aft-management account:" ${AFT_MGMT_ACCOUNT}
-  echo "aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
-  JSON=$(aws sts assume-role --role-arn arn:aws:iam::${AFT_MGMT_ACCOUNT}:role/${AFT_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME})
+  # Assume AWSCICDAdmin in CICD Management account
+  echo "Assuming ${CICD_MGMT_ROLE} in cicd-management account:" ${CICD_MGMT_ACCOUNT}
+  echo "aws sts assume-role --role-arn arn:aws:iam::${CICD_MGMT_ACCOUNT}:role/${CICD_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
+  JSON=$(aws sts assume-role --role-arn arn:aws:iam::${CICD_MGMT_ACCOUNT}:role/${CICD_MGMT_ROLE} --role-session-name ${ROLE_SESSION_NAME})
   #Make newly assumed role default session
   export AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]")
   export AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]")
   export AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]")
 
   # Assume AWSCICDExecution in User Defined account
-  echo "aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
-  JSON=$(aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${AFT_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME})
+  echo "aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${CICD_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME}"
+  JSON=$(aws sts assume-role --role-arn arn:aws:iam::${USER_DEFINED_ACCOUNT_ID}:role/${CICD_EXECUTION_ROLE} --role-session-name ${ROLE_SESSION_NAME})
   echo "[default]" >> ~/.aws/credentials
   echo "aws_access_key_id=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]")" >> ~/.aws/credentials
   echo "aws_secret_access_key=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]")" >> ~/.aws/credentials

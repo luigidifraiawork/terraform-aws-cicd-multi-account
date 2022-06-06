@@ -2,31 +2,31 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 #########################################
-# General AFT Vars
+# General CICD Vars
 #########################################
 
-variable "aft_framework_repo_url" {
-  description = "Git repo URL where the AFT framework should be sourced from"
+variable "cicd_framework_repo_url" {
+  description = "Git repo URL where the CICD framework should be sourced from"
   default     = "https://github.com/luigidifraiawork/terraform-aws-cicd-multi-account.git"
   type        = string
   validation {
-    condition     = length(var.aft_framework_repo_url) > 0
-    error_message = "Variable var: aft_framework_repo_url cannot be empty."
+    condition     = length(var.cicd_framework_repo_url) > 0
+    error_message = "Variable var: cicd_framework_repo_url cannot be empty."
   }
 }
 
-variable "aft_framework_repo_git_ref" {
-  description = "Git branch from which the AFT framework should be sourced from"
+variable "cicd_framework_repo_git_ref" {
+  description = "Git branch from which the CICD framework should be sourced"
   default     = null
   type        = string
 }
 
-variable "aft_management_account_id" {
-  description = "AFT Management Account ID"
+variable "cicd_management_account_id" {
+  description = "CICD Management Account ID"
   type        = string
   validation {
-    condition     = can(regex("^\\d{12}$", var.aft_management_account_id))
-    error_message = "Variable var: aft_management_account_id is not valid."
+    condition     = can(regex("^\\d{12}$", var.cicd_management_account_id))
+    error_message = "Variable var: cicd_management_account_id is not valid."
   }
 }
 
@@ -49,13 +49,13 @@ variable "cloudwatch_log_group_retention" {
   }
 }
 
-variable "aft_vpc_endpoints" {
+variable "cicd_vpc_endpoints" {
   type        = bool
-  description = "Flag turning VPC endpoints on/off for AFT VPC"
+  description = "Flag turning VPC endpoints on/off for CICD VPC"
   default     = true
   validation {
-    condition     = contains([true, false], var.aft_vpc_endpoints)
-    error_message = "Valid values for var: aft_vpc_endpoints are (true, false)."
+    condition     = contains([true, false], var.cicd_vpc_endpoints)
+    error_message = "Valid values for var: cicd_vpc_endpoints are (true, false)."
   }
 }
 
@@ -73,7 +73,7 @@ variable "global_codebuild_timeout" {
 }
 
 #########################################
-# AFT Customer VCS Variables
+# CICD Customer VCS Variables
 #########################################
 
 variable "vcs_provider" {
@@ -92,44 +92,44 @@ variable "github_enterprise_url" {
   default     = "null"
 }
 
-variable "account_customizations_repo_name" {
-  description = "Repository name for the account customizations files. For non-CodeCommit repos, name should be in the format of Org/Repo"
+variable "deployment_repo_name" {
+  description = "Repository name for the deployment files. For non-CodeCommit repos, name should be in the format of Org/Repo"
   type        = string
-  default     = "aft-account-customizations"
+  default     = "infrastructure-deployment"
   validation {
-    condition     = length(var.account_customizations_repo_name) > 0
-    error_message = "Variable var: account_customizations_repo_name cannot be empty."
+    condition     = length(var.deployment_repo_name) > 0
+    error_message = "Variable var: deployment_repo_name cannot be empty."
   }
 }
 
-variable "account_customizations_repo_branch" {
-  description = "Branch to source account customizations repo from"
+variable "deployment_repo_branch" {
+  description = "Branch to source deployment repo from"
   type        = string
   default     = "main"
   validation {
-    condition     = length(var.account_customizations_repo_branch) > 0
-    error_message = "Variable var: account_customizations_repo_branch cannot be empty."
+    condition     = length(var.deployment_repo_branch) > 0
+    error_message = "Variable var: deployment_repo_branch cannot be empty."
   }
 }
 
 #########################################
-# AFT Account Variables
+# CICD Per-Account Deployment Variables
 #########################################
 
-variable "account_customizations_config" {
-  description = "Map of objects for per account configuration"
-  type        = map(object({
-    account_id            = string
-    customizations_folder = string
+variable "deployment_config" {
+  description = "Map of objects for per account deployment"
+  type = map(object({
+    account_id        = string
+    deployment_folder = string
   }))
 }
 
 #########################################
-# AFT Terraform Distribution Variables
+# CICD Terraform Distribution Variables
 #########################################
 
 variable "terraform_version" {
-  description = "Terraform version being used for AFT"
+  description = "Terraform version being used for CICD"
   type        = string
   default     = "0.15.5"
   validation {
@@ -139,7 +139,7 @@ variable "terraform_version" {
 }
 
 variable "terraform_distribution" {
-  description = "Terraform distribution being used for AFT - valid values are oss, tfc, or tfe"
+  description = "Terraform distribution being used for CICD - valid values are oss, tfc, or tfe"
   type        = string
   default     = "oss"
   validation {
@@ -150,7 +150,7 @@ variable "terraform_distribution" {
 
 variable "tf_backend_secondary_region" {
   type        = string
-  description = "AFT creates a backend for state tracking for its own state as well as OSS cases. The backend's primary region is the same as the AFT region, but this defines the secondary region to replicate to."
+  description = "CICD creates a backend for state tracking for its own state as well as OSS cases. The backend's primary region is the same as the CICD region, but this defines the secondary region to replicate to."
   validation {
     condition     = can(regex("(us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-\\d", var.tf_backend_secondary_region))
     error_message = "Variable var: tf_backend_secondary_region is not valid."
@@ -190,55 +190,55 @@ variable "terraform_api_endpoint" {
 }
 
 #########################################
-# AFT VPC Variables
+# CICD VPC Variables
 #########################################
 
-variable "aft_vpc_cidr" {
+variable "cicd_vpc_cidr" {
   type        = string
-  description = "CIDR Block to allocate to the AFT VPC"
+  description = "CIDR Block to allocate to the CICD VPC"
   default     = "192.168.0.0/22"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.aft_vpc_cidr))
-    error_message = "Variable var: aft_vpc_cidr value must be a valid network CIDR, x.x.x.x/y."
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_cidr))
+    error_message = "Variable var: cicd_vpc_cidr value must be a valid network CIDR, x.x.x.x/y."
   }
 }
 
-variable "aft_vpc_private_subnet_01_cidr" {
+variable "cicd_vpc_private_subnet_01_cidr" {
   type        = string
   description = "CIDR Block to allocate to the Private Subnet 01"
   default     = "192.168.0.0/24"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.aft_vpc_private_subnet_01_cidr))
-    error_message = "Variable var: aft_vpc_private_subnet_01_cidr value must be a valid network CIDR, x.x.x.x/y."
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_private_subnet_01_cidr))
+    error_message = "Variable var: cicd_vpc_private_subnet_01_cidr value must be a valid network CIDR, x.x.x.x/y."
   }
 }
 
-variable "aft_vpc_private_subnet_02_cidr" {
+variable "cicd_vpc_private_subnet_02_cidr" {
   type        = string
   description = "CIDR Block to allocate to the Private Subnet 02"
   default     = "192.168.1.0/24"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.aft_vpc_private_subnet_02_cidr))
-    error_message = "Variable var: aft_vpc_private_subnet_02_cidr value must be a valid network CIDR, x.x.x.x/y."
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_private_subnet_02_cidr))
+    error_message = "Variable var: cicd_vpc_private_subnet_02_cidr value must be a valid network CIDR, x.x.x.x/y."
   }
 }
 
-variable "aft_vpc_public_subnet_01_cidr" {
+variable "cicd_vpc_public_subnet_01_cidr" {
   type        = string
   description = "CIDR Block to allocate to the Public Subnet 01"
   default     = "192.168.2.0/25"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.aft_vpc_public_subnet_01_cidr))
-    error_message = "Variable var: aft_vpc_public_subnet_01_cidr value must be a valid network CIDR, x.x.x.x/y."
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_public_subnet_01_cidr))
+    error_message = "Variable var: cicd_vpc_public_subnet_01_cidr value must be a valid network CIDR, x.x.x.x/y."
   }
 }
 
-variable "aft_vpc_public_subnet_02_cidr" {
+variable "cicd_vpc_public_subnet_02_cidr" {
   type        = string
   description = "CIDR Block to allocate to the Public Subnet 02"
   default     = "192.168.2.128/25"
   validation {
-    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.aft_vpc_public_subnet_02_cidr))
-    error_message = "Variable var: aft_vpc_public_subnet_02_cidr value must be a valid network CIDR, x.x.x.x/y."
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_public_subnet_02_cidr))
+    error_message = "Variable var: cicd_vpc_public_subnet_02_cidr value must be a valid network CIDR, x.x.x.x/y."
   }
 }

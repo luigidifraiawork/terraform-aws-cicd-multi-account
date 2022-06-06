@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 #########################################
-# General AFT Vars
+# General CICD Vars
 #########################################
 
-output "aft_management_account_id" {
-  value = var.aft_management_account_id
+output "cicd_management_account_id" {
+  value = var.cicd_management_account_id
 }
 
 output "ct_home_region" {
@@ -18,7 +18,7 @@ output "cloudwatch_log_group_retention" {
 }
 
 #########################################
-# AFT Customer VCS Variables
+# CICD Customer VCS Variables
 #########################################
 
 output "vcs_provider" {
@@ -29,16 +29,16 @@ output "github_enterprise_url" {
   value = var.github_enterprise_url
 }
 
-output "account_customizations_repo_name" {
-  value = var.account_customizations_repo_name
+output "deployment_repo_name" {
+  value = var.deployment_repo_name
 }
 
-output "account_customizations_repo_branch" {
-  value = var.account_customizations_repo_branch
+output "deployment_repo_branch" {
+  value = var.deployment_repo_branch
 }
 
 #########################################
-# AFT Terraform Distribution Variables
+# CICD Terraform Distribution Variables
 #########################################
 
 output "terraform_version" {
@@ -62,25 +62,25 @@ output "terraform_api_endpoint" {
 }
 
 #########################################
-# AFT VPC Variables
+# CICD VPC Variables
 #########################################
 
-output "aft_vpc_cidr" {
-  value = var.aft_vpc_cidr
+output "cicd_vpc_cidr" {
+  value = var.cicd_vpc_cidr
 }
 
-output "aft_vpc_private_subnet_01_cidr" {
-  value = var.aft_vpc_private_subnet_01_cidr
+output "cicd_vpc_private_subnet_01_cidr" {
+  value = var.cicd_vpc_private_subnet_01_cidr
 }
 
-output "aft_vpc_private_subnet_02_cidr" {
-  value = var.aft_vpc_private_subnet_02_cidr
+output "cicd_vpc_private_subnet_02_cidr" {
+  value = var.cicd_vpc_private_subnet_02_cidr
 }
 
-output "aft_vpc_public_subnet_01_cidr" {
-  value = var.aft_vpc_public_subnet_01_cidr
+output "cicd_vpc_public_subnet_01_cidr" {
+  value = var.cicd_vpc_public_subnet_01_cidr
 }
 
-output "aft_vpc_public_subnet_02_cidr" {
-  value = var.aft_vpc_public_subnet_02_cidr
+output "cicd_vpc_public_subnet_02_cidr" {
+  value = var.cicd_vpc_public_subnet_02_cidr
 }
