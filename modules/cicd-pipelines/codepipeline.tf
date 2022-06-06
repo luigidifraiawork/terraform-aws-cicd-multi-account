@@ -57,12 +57,12 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
@@ -87,12 +87,12 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_terraform_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           }
@@ -112,12 +112,12 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
@@ -190,12 +190,12 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
@@ -220,12 +220,12 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_terraform_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           }
@@ -245,12 +245,12 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
         ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
-            name  = "VENDED_ACCOUNT_ID",
+            name  = "ACCOUNT_ID",
             value = var.account_id,
             type  = "PLAINTEXT"
           },
           {
-            name  = "CUSTOMIZATION",
+            name  = "DEPLOYMENT_FOLDER",
             value = var.deployment_folder,
             type  = "PLAINTEXT"
           },

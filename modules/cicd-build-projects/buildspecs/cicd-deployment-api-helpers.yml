@@ -9,7 +9,7 @@ phases:
       - DEFAULT_PATH=$(pwd)
       - AWS_MODULE_SOURCE=$(aws ssm get-parameter --name "/cicd/config/cicd-framework/repo-url" --query "Parameter.Value" --output text)
       - AWS_MODULE_GIT_REF=$(aws ssm get-parameter --name "/cicd/config/cicd-framework/repo-git-ref" --query "Parameter.Value" --output text)
-      - echo $CUSTOMIZATION
+      - echo $DEPLOYMENT_FOLDER
       - |
         ssh_key_parameter=$(aws ssm get-parameter --name /cicd/config/cicd-ssh-key --with-decryption 2> /dev/null || echo "None")
         if [[ $ssh_key_parameter != "None" ]]; then
@@ -29,19 +29,19 @@ phases:
       - git clone -b $AWS_MODULE_GIT_REF $AWS_MODULE_SOURCE aws-cicd-core-framework
       - chmod +x ./aws-cicd-core-framework/sources/scripts/creds.sh
       - |
-        if [ -d "$CUSTOMIZATION" ]; then
-          echo "Found customization" $CUSTOMIZATION
-          ./aws-cicd-core-framework/sources/scripts/creds.sh --account-id $VENDED_ACCOUNT_ID
+        if [ -d "$DEPLOYMENT_FOLDER" ]; then
+          echo "Found deployment folder" $DEPLOYMENT_FOLDER
+          ./aws-cicd-core-framework/sources/scripts/creds.sh --account-id $ACCOUNT_ID
           python3 -m venv ./venv
           source ./venv/bin/activate
-          pip install -r ./$CUSTOMIZATION/api_helpers/python/requirements.txt
-          chmod +x ./$CUSTOMIZATION/api_helpers/$SHELL_SCRIPT
+          pip install -r ./$DEPLOYMENT_FOLDER/api_helpers/python/requirements.txt
+          chmod +x ./$DEPLOYMENT_FOLDER/api_helpers/$SHELL_SCRIPT
         fi
   build:
     commands:
       - |
-        if [ -d "$CUSTOMIZATION" ]; then
-          ./$CUSTOMIZATION/api_helpers/$SHELL_SCRIPT
+        if [ -d "$DEPLOYMENT_FOLDER" ]; then
+          ./$DEPLOYMENT_FOLDER/api_helpers/$SHELL_SCRIPT
         fi
   post_build:
     commands:
