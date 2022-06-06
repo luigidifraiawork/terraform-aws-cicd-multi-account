@@ -12,7 +12,7 @@ variable "account_id" {
   description = "Account ID for which the pipeline is being created"
 }
 
-variable "customizations_folder" {
+variable "deployment_folder" {
   type        = string
   description = "Customization folder for which the pipeline is being created"
 }
@@ -22,13 +22,13 @@ variable "vcs_provider" {
   type        = string
 }
 
-variable "aft_account_customizations_api_helpers_codebuild_name" {
+variable "cicd_deployment_api_helpers_codebuild_name" {
   type        = string
   description = "CodeBuild Project Name"
   default     = "aft-account-customizations-api-helpers"
 }
 
-variable "aft_account_customizations_terraform_codebuild_name" {
+variable "cicd_deployment_terraform_codebuild_name" {
   type        = string
   description = "CodeBuild Project Name"
   default     = "aft-account-customizations-terraform"

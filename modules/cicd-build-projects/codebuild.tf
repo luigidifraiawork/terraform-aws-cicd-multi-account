@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 #####################################################
-# AFT Account Customizations Terraform
+# CICD Infrastructure Deployment Terraform
 #####################################################
 
 resource "aws_codebuild_project" "aft_account_customizations_terraform" {
@@ -10,7 +10,7 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
   name           = "aft-account-customizations-terraform"
   description    = "Job to apply Terraform provided by the customer account customizations repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
-  service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
+  service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
   encryption_key = var.cicd_kms_key_arn
 
   artifacts {
@@ -31,7 +31,7 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.aft_codepipeline_customizations_bucket.id}/aft-account-customizations-terraform-logs"
+      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/aft-account-customizations-terraform-logs"
     }
   }
 
@@ -54,7 +54,7 @@ resource "aws_cloudwatch_log_group" "aft_account_customizations_terraform" {
 }
 
 #####################################################
-# AFT Account Customizations API Helpers
+# CICD Infrastructure Deployment API Helpers
 #####################################################
 
 resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
@@ -62,7 +62,7 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
   name           = "aft-account-customizations-api-helpers"
   description    = "Job to run API helpers provided by the customer AFT Account Module"
   build_timeout  = tostring(var.global_codebuild_timeout)
-  service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
+  service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
   encryption_key = var.cicd_kms_key_arn
 
   artifacts {
@@ -83,7 +83,7 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.aft_codepipeline_customizations_bucket.id}/aft-account-customizations-api-helpers-logs"
+      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/aft-account-customizations-api-helpers-logs"
     }
   }
 

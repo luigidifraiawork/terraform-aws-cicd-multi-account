@@ -5,7 +5,7 @@ data "aws_caller_identity" "cicd_management" {
   provider = aws.cicd_management
 }
 
-resource "aws_iam_role" "aft_admin_role" {
+resource "aws_iam_role" "cicd_admin_role" {
   provider = aws.cicd_management
   name     = "AWSCICDAdmin"
   assume_role_policy = templatefile("${path.module}/iam/aft_admin_role_trust_policy.tpl",
@@ -15,26 +15,26 @@ resource "aws_iam_role" "aft_admin_role" {
   )
 }
 
-resource "aws_iam_role_policy" "aft_admin_role" {
+resource "aws_iam_role_policy" "cicd_admin_role" {
   provider = aws.cicd_management
   name     = "aft_admin_role_policy"
-  role     = aws_iam_role.aft_admin_role.id
+  role     = aws_iam_role.cicd_admin_role.id
 
   policy = file("${path.module}/iam/aft_admin_role_policy.tpl")
 }
 
-module "aft_exec_role" {
+module "cicd_exec_role" {
   source = "./admin-role"
   providers = {
     aws = aws.cicd_management
   }
-  trusted_entity = aws_iam_role.aft_admin_role.arn
+  trusted_entity = aws_iam_role.cicd_admin_role.arn
 }
 
-module "aft_service_role" {
+module "cicd_service_role" {
   source = "./service-role"
   providers = {
     aws = aws.cicd_management
   }
-  trusted_entity = aws_iam_role.aft_admin_role.arn
+  trusted_entity = aws_iam_role.cicd_admin_role.arn
 }

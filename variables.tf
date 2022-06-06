@@ -118,9 +118,9 @@ variable "infrastructure_deployment_repo_branch" {
 
 variable "infrastructure_deployment_config" {
   description = "Map of objects for per account infrastructure deployment"
-  type        = map(object({
-    account_id            = string
-    customizations_folder = string
+  type = map(object({
+    account_id        = string
+    deployment_folder = string
   }))
 }
 

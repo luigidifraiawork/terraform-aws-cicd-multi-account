@@ -76,7 +76,7 @@ resource "aws_ssm_parameter" "cicd_config_backend_bucket_id" {
 resource "aws_ssm_parameter" "aft_config_backend_primary_region" {
   name  = "/aft/config/oss-backend/primary-region"
   type  = "String"
-  value = var.aft_config_backend_primary_region
+  value = var.cicd_config_backend_primary_region
 }
 
 resource "aws_ssm_parameter" "cicd_config_backend_kms_key_id" {

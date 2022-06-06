@@ -1,13 +1,13 @@
 # Copyright Amazon.com, Inc. or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
-resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
+resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
   count    = local.vcs.is_codecommit ? 1 : 0
   name     = "${var.account_id}-customizations-pipeline"
-  role_arn = data.aws_iam_role.aft_codepipeline_customizations_role.arn
+  role_arn = data.aws_iam_role.cicd_codepipeline_customizations_role.arn
 
   artifact_store {
-    location = data.aws_s3_bucket.aft_codepipeline_customizations_bucket.id
+    location = data.aws_s3_bucket.cicd_codepipeline_customizations_bucket.id
     type     = "S3"
 
     encryption_key {
@@ -54,7 +54,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
       version         = "1"
       run_order       = "1"
       configuration = {
-        ProjectName = var.aft_account_customizations_api_helpers_codebuild_name
+        ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -63,7 +63,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
           {
@@ -84,7 +84,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
       version         = "1"
       run_order       = "2"
       configuration = {
-        ProjectName = var.aft_account_customizations_terraform_codebuild_name
+        ProjectName = var.cicd_deployment_terraform_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -93,7 +93,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           }
         ])
@@ -109,7 +109,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
       version         = "1"
       run_order       = "3"
       configuration = {
-        ProjectName = var.aft_account_customizations_api_helpers_codebuild_name
+        ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -118,7 +118,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
           {
@@ -132,13 +132,13 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
   }
 }
 
-resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
+resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
   count    = local.vcs.is_codecommit ? 0 : 1
   name     = "${var.account_id}-customizations-pipeline"
-  role_arn = data.aws_iam_role.aft_codepipeline_customizations_role.arn
+  role_arn = data.aws_iam_role.cicd_codepipeline_customizations_role.arn
 
   artifact_store {
-    location = data.aws_s3_bucket.aft_codepipeline_customizations_bucket.id
+    location = data.aws_s3_bucket.cicd_codepipeline_customizations_bucket.id
     type     = "S3"
 
     encryption_key {
@@ -187,7 +187,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
       version         = "1"
       run_order       = "1"
       configuration = {
-        ProjectName = var.aft_account_customizations_api_helpers_codebuild_name
+        ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -196,7 +196,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
           {
@@ -217,7 +217,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
       version         = "1"
       run_order       = "2"
       configuration = {
-        ProjectName = var.aft_account_customizations_terraform_codebuild_name
+        ProjectName = var.cicd_deployment_terraform_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -226,7 +226,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           }
         ])
@@ -242,7 +242,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
       version         = "1"
       run_order       = "3"
       configuration = {
-        ProjectName = var.aft_account_customizations_api_helpers_codebuild_name
+        ProjectName = var.cicd_deployment_api_helpers_codebuild_name
         EnvironmentVariables = jsonencode([
           {
             name  = "VENDED_ACCOUNT_ID",
@@ -251,7 +251,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
           },
           {
             name  = "CUSTOMIZATION",
-            value = var.customizations_folder,
+            value = var.deployment_folder,
             type  = "PLAINTEXT"
           },
           {

@@ -50,7 +50,7 @@ variable "cicd_config_backend_bucket_id" {
   type = string
 }
 
-variable "aft_config_backend_primary_region" {
+variable "cicd_config_backend_primary_region" {
   type = string
 }
 
