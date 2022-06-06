@@ -19,7 +19,7 @@ module "cicd_backend" {
     aws.primary_region   = aws.aft_management
     aws.secondary_region = aws.tf_backend_secondary_region
   }
-  source           = "./modules/aft-backend"
+  source           = "./modules/cicd-backend"
   primary_region   = var.ct_home_region
   secondary_region = var.tf_backend_secondary_region
 }
@@ -30,7 +30,7 @@ module "aft_code_repositories" {
   }
   source                                          = "./modules/aft-code-repositories"
   vpc_id                                          = module.aft_account_request_framework.cicd_vpc_id
-  security_group_ids                              = module.aft_account_request_framework.aft_vpc_default_sg
+  security_group_ids                              = module.aft_account_request_framework.cicd_vpc_default_sg
   subnet_ids                                      = module.aft_account_request_framework.cicd_vpc_private_subnets
   github_enterprise_url                           = var.github_enterprise_url
   vcs_provider                                    = var.vcs_provider
@@ -43,19 +43,19 @@ module "aft_customizations" {
   source                                            = "./modules/aft-customizations"
   cicd_framework_repo_git_ref_ssm_path              = local.ssm_paths.cicd_framework_repo_git_ref_ssm_path
   cicd_framework_repo_url_ssm_path                  = local.ssm_paths.cicd_framework_repo_url_ssm_path
-  aft_tf_backend_region_ssm_path                    = local.ssm_paths.aft_tf_backend_region_ssm_path
-  aft_tf_ddb_table_ssm_path                         = local.ssm_paths.aft_tf_ddb_table_ssm_path
-  aft_tf_kms_key_id_ssm_path                        = local.ssm_paths.aft_tf_kms_key_id_ssm_path
-  aft_tf_s3_bucket_ssm_path                         = local.ssm_paths.aft_tf_s3_bucket_ssm_path
-  aft_tf_version_ssm_path                           = local.ssm_paths.aft_tf_version_ssm_path
-  aft_kms_key_id                                    = module.aft_account_request_framework.aft_kms_key_id
-  aft_kms_key_arn                                   = module.aft_account_request_framework.aft_kms_key_arn
-  aft_vpc_id                                        = module.aft_account_request_framework.cicd_vpc_id
-  aft_vpc_private_subnets                           = module.aft_account_request_framework.cicd_vpc_private_subnets
-  aft_vpc_default_sg                                = module.aft_account_request_framework.aft_vpc_default_sg
-  aft_config_backend_bucket_id                      = module.cicd_backend.bucket_id
-  aft_config_backend_table_id                       = module.cicd_backend.table_id
-  aft_config_backend_kms_key_id                     = module.cicd_backend.kms_key_id
+  cicd_tf_backend_region_ssm_path                   = local.ssm_paths.cicd_tf_backend_region_ssm_path
+  cicd_tf_ddb_table_ssm_path                        = local.ssm_paths.cicd_tf_ddb_table_ssm_path
+  cicd_tf_kms_key_id_ssm_path                       = local.ssm_paths.cicd_tf_kms_key_id_ssm_path
+  cicd_tf_s3_bucket_ssm_path                        = local.ssm_paths.aft_tf_s3_bucket_ssm_path
+  cicd_tf_version_ssm_path                          = local.ssm_paths.cicd_tf_version_ssm_path
+  cicd_kms_key_id                                   = module.aft_account_request_framework.cicd_kms_key_id
+  cicd_kms_key_arn                                  = module.aft_account_request_framework.cicd_kms_key_arn
+  cicd_vpc_id                                       = module.aft_account_request_framework.cicd_vpc_id
+  cicd_vpc_private_subnets                          = module.aft_account_request_framework.cicd_vpc_private_subnets
+  cicd_vpc_default_sg                               = module.aft_account_request_framework.cicd_vpc_default_sg
+  cicd_config_backend_bucket_id                     = module.cicd_backend.bucket_id
+  cicd_config_backend_table_id                      = module.cicd_backend.table_id
+  cicd_config_backend_kms_key_id                    = module.cicd_backend.kms_key_id
   terraform_distribution                            = var.terraform_distribution
   cloudwatch_log_group_retention                    = var.cloudwatch_log_group_retention
   global_codebuild_timeout                          = var.global_codebuild_timeout

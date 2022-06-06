@@ -11,7 +11,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
     type     = "S3"
 
     encryption_key {
-      id   = data.aws_kms_alias.aft_key.arn
+      id   = data.aws_kms_alias.cicd_key.arn
       type = "KMS"
     }
   }
@@ -142,7 +142,7 @@ resource "aws_codepipeline" "aft_codestar_customizations_codepipeline" {
     type     = "S3"
 
     encryption_key {
-      id   = data.aws_kms_alias.aft_key.arn
+      id   = data.aws_kms_alias.cicd_key.arn
       type = "KMS"
     }
   }

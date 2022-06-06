@@ -18,8 +18,8 @@ data "aws_ssm_parameter" "infrastructure_deployment_repo_branch" {
 }
 
 # Lookups from aft-account-request-framework module
-data "aws_kms_alias" "aft_key" {
-  name = "alias/aft"
+data "aws_kms_alias" "cicd_key" {
+  name = "alias/cicd"
 }
 
 data "aws_iam_role" "aft_codepipeline_customizations_role" {

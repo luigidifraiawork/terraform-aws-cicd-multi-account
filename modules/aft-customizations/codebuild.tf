@@ -11,7 +11,7 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
   description    = "Job to apply Terraform provided by the customer account customizations repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
-  encryption_key = var.aft_kms_key_arn
+  encryption_key = var.cicd_kms_key_arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -41,9 +41,9 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
   }
 
   vpc_config {
-    vpc_id             = var.aft_vpc_id
-    subnets            = var.aft_vpc_private_subnets
-    security_group_ids = var.aft_vpc_default_sg
+    vpc_id             = var.cicd_vpc_id
+    subnets            = var.cicd_vpc_private_subnets
+    security_group_ids = var.cicd_vpc_default_sg
   }
 
 }
@@ -63,7 +63,7 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
   description    = "Job to run API helpers provided by the customer AFT Account Module"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
-  encryption_key = var.aft_kms_key_arn
+  encryption_key = var.cicd_kms_key_arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -93,9 +93,9 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
   }
 
   vpc_config {
-    vpc_id             = var.aft_vpc_id
-    subnets            = var.aft_vpc_private_subnets
-    security_group_ids = var.aft_vpc_default_sg
+    vpc_id             = var.cicd_vpc_id
+    subnets            = var.cicd_vpc_private_subnets
+    security_group_ids = var.cicd_vpc_default_sg
   }
 
 }

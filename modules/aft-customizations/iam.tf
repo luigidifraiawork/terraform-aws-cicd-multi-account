@@ -18,7 +18,7 @@ resource "aws_iam_role_policy" "aft_codepipeline_customizations_policy" {
     aws_s3_bucket_aft_codepipeline_customizations_bucket_arn = aws_s3_bucket.aft_codepipeline_customizations_bucket.arn
     data_aws_region_current_name                             = data.aws_region.current.name
     data_aws_caller_identity_current_account_id              = data.aws_caller_identity.current.account_id
-    data_aws_kms_alias_aft_key_target_key_arn                = var.aft_kms_key_arn
+    data_aws_kms_alias_aft_key_target_key_arn                = var.cicd_kms_key_arn
   })
 }
 ###################################################################
@@ -37,7 +37,7 @@ resource "aws_iam_role_policy" "aft_codebuild_customizations_policy" {
     aws_s3_bucket_aft_codepipeline_customizations_bucket_arn = aws_s3_bucket.aft_codepipeline_customizations_bucket.arn
     data_aws_region_current_name                             = data.aws_region.current.name
     data_aws_caller_identity_current_account_id              = data.aws_caller_identity.current.account_id
-    data_aws_kms_alias_aft_key_target_key_arn                = var.aft_kms_key_arn
+    data_aws_kms_alias_aft_key_target_key_arn                = var.cicd_kms_key_arn
     #data_aws_dynamo_account_metadata_table                   = var.request_metadata_table_name
   })
 }
@@ -50,8 +50,8 @@ resource "aws_iam_role_policy" "terraform_oss_backend_codebuild_customizations_p
   policy = templatefile("${path.module}/iam/role-policies/ct_aft_codebuild_oss_backend_policy.tpl", {
     data_aws_region_current_name                      = data.aws_region.current.name
     data_aws_caller_identity_current_account_id       = data.aws_caller_identity.current.account_id
-    data_aws_dynamo_terraform_oss_backend_table       = var.aft_config_backend_table_id
-    aws_s3_bucket_aft_terraform_oss_backend_bucket_id = var.aft_config_backend_bucket_id
-    aws_s3_bucket_aft_terraform_oss_kms_key_id        = var.aft_config_backend_kms_key_id
+    data_aws_dynamo_terraform_oss_backend_table       = var.cicd_config_backend_table_id
+    aws_s3_bucket_aft_terraform_oss_backend_bucket_id = var.cicd_config_backend_bucket_id
+    aws_s3_bucket_aft_terraform_oss_kms_key_id        = var.cicd_config_backend_kms_key_id
   })
 }
