@@ -14,11 +14,11 @@ module "cicd_network" {
   cicd_vpc_endpoints              = var.cicd_vpc_endpoints
 }
 
-module "cicd_keys" {
+module "cicd_kms" {
   providers = {
     aws = aws.cicd_management
   }
-  source = "./modules/cicd-keys"
+  source = "./modules/cicd-kms"
 }
 
 module "cicd_backend" {
@@ -31,11 +31,11 @@ module "cicd_backend" {
   secondary_region = var.tf_backend_secondary_region
 }
 
-module "cicd_codestar" {
+module "cicd_codestar_connection" {
   providers = {
     aws = aws.cicd_management
   }
-  source                = "./modules/cicd-codestar"
+  source                = "./modules/cicd-codestar-connection"
   vpc_id                = module.cicd_network.cicd_vpc_id
   security_group_ids    = module.cicd_network.cicd_vpc_default_sg
   subnet_ids            = module.cicd_network.cicd_vpc_private_subnets
@@ -55,8 +55,8 @@ module "cicd_build_projects" {
   cicd_tf_kms_key_id_ssm_path          = local.ssm_paths.cicd_tf_kms_key_id_ssm_path
   cicd_tf_s3_bucket_ssm_path           = local.ssm_paths.cicd_tf_s3_bucket_ssm_path
   cicd_tf_version_ssm_path             = local.ssm_paths.cicd_tf_version_ssm_path
-  cicd_kms_key_id                      = module.cicd_keys.cicd_kms_key_id
-  cicd_kms_key_arn                     = module.cicd_keys.cicd_kms_key_arn
+  cicd_kms_key_id                      = module.cicd_kms.cicd_kms_key_id
+  cicd_kms_key_arn                     = module.cicd_kms.cicd_kms_key_arn
   cicd_vpc_id                          = module.cicd_network.cicd_vpc_id
   cicd_vpc_private_subnets             = module.cicd_network.cicd_vpc_private_subnets
   cicd_vpc_default_sg                  = module.cicd_network.cicd_vpc_default_sg
@@ -81,7 +81,7 @@ module "cicd_ssm_parameters" {
     aws = aws.cicd_management
   }
   source                             = "./modules/cicd-ssm-parameters"
-  codestar_connection_arn            = module.cicd_codestar.codestar_connection_arn
+  codestar_connection_arn            = module.cicd_codestar_connection.codestar_connection_arn
   cicd_config_backend_bucket_id      = module.cicd_backend.bucket_id
   cicd_config_backend_table_id       = module.cicd_backend.table_id
   cicd_config_backend_kms_key_id     = module.cicd_backend.kms_key_id
