@@ -24,7 +24,7 @@ do
       ;;
     --help)
       echo ""
-      echo "creds.sh creates an AWS CLI credential file leveraging the AWSCICDExecution role for specified accounts"
+      echo "creds.sh creates an AWS CLI credential file leveraging the AWSCICDExecution role to use with API Helpers for the specified account"
       echo ""
       echo "** creds.sh should be run from the CI/CD Management account with a role that can assume the AWSCICDAdmin role"
       echo ""
