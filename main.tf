@@ -100,7 +100,7 @@ module "cicd_ssm_parameters" {
   terraform_token                       = var.terraform_token
   terraform_api_endpoint                = var.terraform_api_endpoint
   terraform_org_name                    = var.terraform_org_name
-  infrastructure_deployment_repo_name   = var.infrastructure_deployment_repo_name
+  infrastructure_deployment_repo_name   = var.deployment_repo_name
   infrastructure_deployment_repo_branch = var.infrastructure_deployment_repo_branch
   github_enterprise_url                 = var.github_enterprise_url
 }

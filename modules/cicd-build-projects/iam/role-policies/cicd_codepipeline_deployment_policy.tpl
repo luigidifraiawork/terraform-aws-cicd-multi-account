@@ -19,7 +19,7 @@
         "codebuild:BatchGetBuilds",
         "codebuild:StartBuild"
       ],
-        "Resource": "arn:aws:codebuild:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:*customizations*"
+        "Resource": "arn:aws:codebuild:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:*deployment*"
     },
     {
       "Effect": "Allow",
@@ -32,7 +32,7 @@
         "codecommit:GetUploadArchiveStatus",
         "codecommit:CancelUploadArchive"
       ],
-      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:cicd-*"
+      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:*"
     },
     {
       "Effect": "Allow",
@@ -43,10 +43,10 @@
       ],
       "Resource": "${data_aws_kms_alias_cicd_key_target_key_arn}"
     },
-     {
-         "Effect": "Allow",
-         "Action": "codestar-connections:UseConnection",
-         "Resource": "*"
-     }
+    {
+      "Effect": "Allow",
+      "Action": "codestar-connections:UseConnection",
+      "Resource": "*"
+    }
   ]
 }

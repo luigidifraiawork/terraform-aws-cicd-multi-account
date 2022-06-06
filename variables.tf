@@ -92,18 +92,18 @@ variable "github_enterprise_url" {
   default     = "null"
 }
 
-variable "infrastructure_deployment_repo_name" {
-  description = "Repository name for the account customizations files. For non-CodeCommit repos, name should be in the format of Org/Repo"
+variable "deployment_repo_name" {
+  description = "Repository name for the deployment files. For non-CodeCommit repos, name should be in the format of Org/Repo"
   type        = string
   default     = "aft-account-customizations"
   validation {
-    condition     = length(var.infrastructure_deployment_repo_name) > 0
+    condition     = length(var.deployment_repo_name) > 0
     error_message = "Variable var: infrastructure_deployment_repo_name cannot be empty."
   }
 }
 
 variable "infrastructure_deployment_repo_branch" {
-  description = "Branch to source account customizations repo from"
+  description = "Branch to source deployment repo from"
   type        = string
   default     = "main"
   validation {

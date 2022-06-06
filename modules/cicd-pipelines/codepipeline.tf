@@ -3,11 +3,11 @@
 #
 resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
   count    = local.vcs.is_codecommit ? 1 : 0
-  name     = "${var.account_id}-customizations-pipeline"
-  role_arn = data.aws_iam_role.cicd_codepipeline_customizations_role.arn
+  name     = "${var.account_id}-deployment-pipeline"
+  role_arn = data.aws_iam_role.cicd_codepipeline_deployment_role.arn
 
   artifact_store {
-    location = data.aws_s3_bucket.cicd_codepipeline_customizations_bucket.id
+    location = data.aws_s3_bucket.cicd_codepipeline_deployment_bucket.id
     type     = "S3"
 
     encryption_key {
@@ -134,11 +134,11 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
 
 resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
   count    = local.vcs.is_codecommit ? 0 : 1
-  name     = "${var.account_id}-customizations-pipeline"
-  role_arn = data.aws_iam_role.cicd_codepipeline_customizations_role.arn
+  name     = "${var.account_id}-deployment-pipeline"
+  role_arn = data.aws_iam_role.cicd_codepipeline_deployment_role.arn
 
   artifact_store {
-    location = data.aws_s3_bucket.cicd_codepipeline_customizations_bucket.id
+    location = data.aws_s3_bucket.cicd_codepipeline_deployment_bucket.id
     type     = "S3"
 
     encryption_key {

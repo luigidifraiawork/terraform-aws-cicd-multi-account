@@ -30,7 +30,7 @@ output "github_enterprise_url" {
 }
 
 output "infrastructure_deployment_repo_name" {
-  value = var.infrastructure_deployment_repo_name
+  value = var.deployment_repo_name
 }
 
 output "infrastructure_deployment_repo_branch" {

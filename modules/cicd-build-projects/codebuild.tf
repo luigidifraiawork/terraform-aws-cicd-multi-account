@@ -8,7 +8,7 @@
 resource "aws_codebuild_project" "cicd_deployment_terraform" {
   depends_on     = [aws_cloudwatch_log_group.cicd_deployment_terraform]
   name           = "cicd-deployment-terraform"
-  description    = "Job to apply Terraform provided by the customer account customizations repo"
+  description    = "Job to apply Terraform provided by the customer deployment repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
   encryption_key = var.cicd_kms_key_arn
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_log_group" "cicd_deployment_terraform" {
 resource "aws_codebuild_project" "cicd_deployment_api_helpers" {
   depends_on     = [aws_cloudwatch_log_group.cicd_deployment_api_helpers]
   name           = "cicd-deployment-api-helpers"
-  description    = "Job to run API helpers provided by the customer ACICD Deployment Module"
+  description    = "Job to run API helpers provided by the customer deployment repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
   encryption_key = var.cicd_kms_key_arn

@@ -21,10 +21,10 @@ data "aws_kms_alias" "cicd_key" {
   name = "alias/cicd"
 }
 
-data "aws_iam_role" "cicd_codepipeline_customizations_role" {
+data "aws_iam_role" "cicd_codepipeline_deployment_role" {
   name = "cicd-codepipeline-deployment-role"
 }
 
-data "aws_s3_bucket" "cicd_codepipeline_customizations_bucket" {
+data "aws_s3_bucket" "cicd_codepipeline_deployment_bucket" {
   bucket = "cicd-deployment-pipeline-${data.aws_caller_identity.current.account_id}"
 }
