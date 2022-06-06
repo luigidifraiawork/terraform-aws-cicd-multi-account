@@ -20,25 +20,25 @@ resource "aws_ssm_parameter" "tf_version" {
 }
 
 resource "aws_ssm_parameter" "tf_distribution" {
-  name  = "/aft/config/terraform/distribution"
+  name  = "/cicd/config/terraform/distribution"
   type  = "String"
   value = var.tf_distribution
 }
 
 resource "aws_ssm_parameter" "terraform_api_endpoint" {
-  name  = "/aft/config/terraform/api-endpoint"
+  name  = "/cicd/config/terraform/api-endpoint"
   type  = "String"
   value = var.terraform_api_endpoint
 }
 
 resource "aws_ssm_parameter" "terraform_token" {
-  name  = "/aft/config/terraform/token"
+  name  = "/cicd/config/terraform/token"
   type  = "SecureString"
   value = var.terraform_token
 }
 
 resource "aws_ssm_parameter" "terraform_org_name" {
-  name  = "/aft/config/terraform/org-name"
+  name  = "/cicd/config/terraform/org-name"
   type  = "String"
   value = var.terraform_org_name
 }
