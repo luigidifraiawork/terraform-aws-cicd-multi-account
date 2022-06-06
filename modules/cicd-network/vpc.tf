@@ -6,7 +6,7 @@ resource "aws_vpc" "cicd_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = "aft-management-vpc"
+    Name = "cicd-management-vpc"
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_subnet" "cicd_vpc_private_subnet_01" {
   cidr_block        = var.cicd_vpc_private_subnet_01_cidr
   availability_zone = element(data.aws_availability_zones.available.names, 0)
   tags = {
-    Name = "aft-vpc-private-subnet-01"
+    Name = "cicd-vpc-private-subnet-01"
   }
 }
 
@@ -28,7 +28,7 @@ resource "aws_subnet" "cicd_vpc_private_subnet_02" {
   cidr_block        = var.cicd_vpc_private_subnet_02_cidr
   availability_zone = element(data.aws_availability_zones.available.names, 1)
   tags = {
-    Name = "aft-vpc-private-subnet-02"
+    Name = "cicd-vpc-private-subnet-02"
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_subnet" "cicd_vpc_public_subnet_01" {
   cidr_block        = var.cicd_vpc_public_subnet_01_cidr
   availability_zone = element(data.aws_availability_zones.available.names, 0)
   tags = {
-    Name = "aft-vpc-public-subnet-01"
+    Name = "cicd-vpc-public-subnet-01"
   }
 }
 
@@ -46,7 +46,7 @@ resource "aws_subnet" "cicd_vpc_public_subnet_02" {
   cidr_block        = var.cicd_vpc_public_subnet_02_cidr
   availability_zone = element(data.aws_availability_zones.available.names, 1)
   tags = {
-    Name = "aft-vpc-public-subnet-02"
+    Name = "cicd-vpc-public-subnet-02"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_route_table" "cicd_vpc_private_subnet_01" {
     nat_gateway_id = aws_nat_gateway.cicd_vpc_natgw_01.id
   }
   tags = {
-    Name = "aft-vpc-private-subnet-01"
+    Name = "cicd-vpc-private-subnet-01"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_route_table" "cicd_vpc_private_subnet_02" {
     nat_gateway_id = aws_nat_gateway.cicd_vpc_natgw_02.id
   }
   tags = {
-    Name = "aft-vpc-private-subnet-02"
+    Name = "cicd-vpc-private-subnet-02"
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_route_table" "cicd_vpc_public_subnet_01" {
     gateway_id = aws_internet_gateway.cicd_vpc_igw.id
   }
   tags = {
-    Name = "aft-vpc-public-subnet-01"
+    Name = "cicd-vpc-public-subnet-01"
   }
 }
 
@@ -114,7 +114,7 @@ resource "aws_route_table_association" "cicd_vpc_public_subnet_02" {
 #########################################
 
 resource "aws_security_group" "cicd_vpc_default_sg" {
-  name        = "aft-default-sg"
+  name        = "cicd-default-sg"
   description = "Allow outbound traffic"
   vpc_id      = aws_vpc.cicd_vpc.id
 
@@ -128,7 +128,7 @@ resource "aws_security_group" "cicd_vpc_default_sg" {
 }
 
 resource "aws_security_group" "cicd_vpc_endpoint_sg" {
-  name        = "aft-endpoint-sg"
+  name        = "cicd-endpoint-sg"
   description = "Allow inbound HTTPS traffic and all Outbound"
   vpc_id      = aws_vpc.cicd_vpc.id
 
@@ -163,7 +163,7 @@ resource "aws_internet_gateway" "cicd_vpc_igw" {
   vpc_id = aws_vpc.cicd_vpc.id
 
   tags = {
-    Name = "aft-vpc-igw"
+    Name = "cicd-vpc-igw"
   }
 }
 
@@ -178,7 +178,7 @@ resource "aws_nat_gateway" "cicd_vpc_natgw_01" {
   subnet_id     = aws_subnet.cicd_vpc_public_subnet_01.id
 
   tags = {
-    Name = "aft-vpc-natgw-01"
+    Name = "cicd-vpc-natgw-01"
   }
 
 }
@@ -190,7 +190,7 @@ resource "aws_nat_gateway" "cicd_vpc_natgw_02" {
   subnet_id     = aws_subnet.cicd_vpc_public_subnet_02.id
 
   tags = {
-    Name = "aft-vpc-natgw-02"
+    Name = "cicd-vpc-natgw-02"
   }
 
 }
@@ -204,7 +204,7 @@ resource "aws_vpc_endpoint" "s3" {
 
   vpc_id            = aws_vpc.cicd_vpc.id
   vpc_endpoint_type = "Gateway"
-  service_name      = "com.amazonaws.${data.aws_region.aft-management.name}.s3"
+  service_name      = "com.amazonaws.${data.aws_region.cicd_management.name}.s3"
   route_table_ids   = [aws_route_table.cicd_vpc_private_subnet_01.id, aws_route_table.cicd_vpc_private_subnet_02.id, aws_route_table.cicd_vpc_public_subnet_01.id]
 }
 
@@ -213,7 +213,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
 
   vpc_id            = aws_vpc.cicd_vpc.id
   vpc_endpoint_type = "Gateway"
-  service_name      = "com.amazonaws.${data.aws_region.aft-management.name}.dynamodb"
+  service_name      = "com.amazonaws.${data.aws_region.cicd_management.name}.dynamodb"
   route_table_ids   = [aws_route_table.cicd_vpc_private_subnet_01.id, aws_route_table.cicd_vpc_private_subnet_02.id, aws_route_table.cicd_vpc_public_subnet_01.id]
 }
 

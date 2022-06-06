@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 #########################################
-# General AFT Vars
+# General CICD Vars
 #########################################
 
 output "cicd_management_account_id" {
@@ -18,7 +18,7 @@ output "cloudwatch_log_group_retention" {
 }
 
 #########################################
-# AFT Customer VCS Variables
+# CICD Customer VCS Variables
 #########################################
 
 output "vcs_provider" {
@@ -38,7 +38,7 @@ output "infrastructure_deployment_repo_branch" {
 }
 
 #########################################
-# AFT Terraform Distribution Variables
+# CICD Terraform Distribution Variables
 #########################################
 
 output "terraform_version" {

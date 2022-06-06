@@ -5,9 +5,9 @@
 # CICD Infrastructure Deployment Terraform
 #####################################################
 
-resource "aws_codebuild_project" "aft_account_customizations_terraform" {
-  depends_on     = [aws_cloudwatch_log_group.aft_account_customizations_terraform]
-  name           = "aft-account-customizations-terraform"
+resource "aws_codebuild_project" "cicd_deployment_terraform" {
+  depends_on     = [aws_cloudwatch_log_group.cicd_deployment_terraform]
+  name           = "cicd-deployment-terraform"
   description    = "Job to apply Terraform provided by the customer account customizations repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
@@ -26,18 +26,18 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
 
   logs_config {
     cloudwatch_logs {
-      group_name = aws_cloudwatch_log_group.aft_account_customizations_terraform.name
+      group_name = aws_cloudwatch_log_group.cicd_deployment_terraform.name
     }
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/aft-account-customizations-terraform-logs"
+      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/cicd-deployment-terraform-logs"
     }
   }
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = data.local_file.aft_account_customizations_terraform.content
+    buildspec = data.local_file.cicd_deployment_terraform.content
   }
 
   vpc_config {
@@ -48,8 +48,8 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
 
 }
 
-resource "aws_cloudwatch_log_group" "aft_account_customizations_terraform" {
-  name              = "/aws/codebuild/aft-account-customizations-terraform"
+resource "aws_cloudwatch_log_group" "cicd_deployment_terraform" {
+  name              = "/aws/codebuild/cicd-deployment-terraform"
   retention_in_days = var.cloudwatch_log_group_retention
 }
 
@@ -57,10 +57,10 @@ resource "aws_cloudwatch_log_group" "aft_account_customizations_terraform" {
 # CICD Infrastructure Deployment API Helpers
 #####################################################
 
-resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
-  depends_on     = [aws_cloudwatch_log_group.aft_account_customizations_api_helpers]
-  name           = "aft-account-customizations-api-helpers"
-  description    = "Job to run API helpers provided by the customer AFT Account Module"
+resource "aws_codebuild_project" "cicd_deployment_api_helpers" {
+  depends_on     = [aws_cloudwatch_log_group.cicd_deployment_api_helpers]
+  name           = "cicd-deployment-api-helpers"
+  description    = "Job to run API helpers provided by the customer ACICD Deployment Module"
   build_timeout  = tostring(var.global_codebuild_timeout)
   service_role   = aws_iam_role.cicd_codebuild_deployment_role.arn
   encryption_key = var.cicd_kms_key_arn
@@ -78,18 +78,18 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
 
   logs_config {
     cloudwatch_logs {
-      group_name = aws_cloudwatch_log_group.aft_account_customizations_api_helpers.name
+      group_name = aws_cloudwatch_log_group.cicd_deployment_api_helpers.name
     }
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/aft-account-customizations-api-helpers-logs"
+      location = "${aws_s3_bucket.cicd_codepipeline_deployment_bucket.id}/cicd-deployment-api-helpers-logs"
     }
   }
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = data.local_file.aft_account_customizations_api_helpers.content
+    buildspec = data.local_file.cicd_deployment_api_helpers.content
   }
 
   vpc_config {
@@ -100,7 +100,7 @@ resource "aws_codebuild_project" "aft_account_customizations_api_helpers" {
 
 }
 
-resource "aws_cloudwatch_log_group" "aft_account_customizations_api_helpers" {
-  name              = "/aws/codebuild/aft-account-customizations-api-helpers"
+resource "aws_cloudwatch_log_group" "cicd_deployment_api_helpers" {
+  name              = "/aws/codebuild/cicd-deployment-api-helpers"
   retention_in_days = var.cloudwatch_log_group_retention
 }

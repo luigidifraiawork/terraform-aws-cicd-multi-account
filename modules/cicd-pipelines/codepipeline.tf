@@ -23,12 +23,12 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
     name = "Source"
 
     action {
-      name             = "aft-account-customizations"
+      name             = "cicd-deployment"
       category         = "Source"
       owner            = "AWS"
       provider         = "CodeCommit"
       version          = "1"
-      output_artifacts = ["source-aft-account-customizations"]
+      output_artifacts = ["source-cicd-deployment"]
 
       configuration = {
         RepositoryName       = data.aws_ssm_parameter.infrastructure_deployment_repo_name.value
@@ -39,18 +39,18 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
   }
 
   ##############################################################
-  # Apply-AFT-Account-Customizations
+  # Deploy
   ##############################################################
 
   stage {
-    name = "Apply-AFT-Account-Customizations"
+    name = "Deploy"
 
     action {
       name            = "Pre-API-Helpers"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "1"
       configuration = {
@@ -80,7 +80,7 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "2"
       configuration = {
@@ -105,7 +105,7 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "3"
       configuration = {
@@ -154,12 +154,12 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
     name = "Source"
 
     action {
-      name             = "aft-account-customizations"
+      name             = "cicd-deployment"
       category         = "Source"
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
       version          = "1"
-      output_artifacts = ["source-aft-account-customizations"]
+      output_artifacts = ["source-cicd-deployment"]
 
       configuration = {
         ConnectionArn        = data.aws_ssm_parameter.codestar_connection_arn.value
@@ -172,18 +172,18 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
   }
 
   ##############################################################
-  # Apply-AFT-Account-Customizations
+  # Deploy
   ##############################################################
 
   stage {
-    name = "Apply-AFT-Account-Customizations"
+    name = "Deploy"
 
     action {
       name            = "Pre-API-Helpers"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "1"
       configuration = {
@@ -213,7 +213,7 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "2"
       configuration = {
@@ -238,7 +238,7 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["source-aft-account-customizations"]
+      input_artifacts = ["source-cicd-deployment"]
       version         = "1"
       run_order       = "3"
       configuration = {

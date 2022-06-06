@@ -22,7 +22,7 @@ variable "cicd_framework_repo_git_ref" {
 }
 
 variable "cicd_management_account_id" {
-  description = "AFT Management Account ID"
+  description = "CICD Management Account ID"
   type        = string
   validation {
     condition     = can(regex("^\\d{12}$", var.cicd_management_account_id))
@@ -51,7 +51,7 @@ variable "cloudwatch_log_group_retention" {
 
 variable "cicd_vpc_endpoints" {
   type        = bool
-  description = "Flag turning VPC endpoints on/off for AFT VPC"
+  description = "Flag turning VPC endpoints on/off for CICD VPC"
   default     = true
   validation {
     condition     = contains([true, false], var.cicd_vpc_endpoints)
@@ -125,11 +125,11 @@ variable "infrastructure_deployment_config" {
 }
 
 #########################################
-# AFT Terraform Distribution Variables
+# CICD Terraform Distribution Variables
 #########################################
 
 variable "terraform_version" {
-  description = "Terraform version being used for AFT"
+  description = "Terraform version being used for CICD"
   type        = string
   default     = "0.15.5"
   validation {
@@ -139,7 +139,7 @@ variable "terraform_version" {
 }
 
 variable "terraform_distribution" {
-  description = "Terraform distribution being used for AFT - valid values are oss, tfc, or tfe"
+  description = "Terraform distribution being used for CICD - valid values are oss, tfc, or tfe"
   type        = string
   default     = "oss"
   validation {
@@ -150,7 +150,7 @@ variable "terraform_distribution" {
 
 variable "tf_backend_secondary_region" {
   type        = string
-  description = "AFT creates a backend for state tracking for its own state as well as OSS cases. The backend's primary region is the same as the AFT region, but this defines the secondary region to replicate to."
+  description = "CICD creates a backend for state tracking for its own state as well as OSS cases. The backend's primary region is the same as the CICD region, but this defines the secondary region to replicate to."
   validation {
     condition     = can(regex("(us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-\\d", var.tf_backend_secondary_region))
     error_message = "Variable var: tf_backend_secondary_region is not valid."
@@ -190,12 +190,12 @@ variable "terraform_api_endpoint" {
 }
 
 #########################################
-# AFT VPC Variables
+# CICD VPC Variables
 #########################################
 
 variable "cicd_vpc_cidr" {
   type        = string
-  description = "CIDR Block to allocate to the AFT VPC"
+  description = "CIDR Block to allocate to the CICD VPC"
   default     = "192.168.0.0/22"
   validation {
     condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$", var.cicd_vpc_cidr))

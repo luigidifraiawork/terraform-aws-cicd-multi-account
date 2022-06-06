@@ -3,7 +3,7 @@
   "Statement": [
     {
       "Effect": "Allow",
-      "Resource": "arn:aws:logs:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:log-group:/aws/codebuild/aft*",
+      "Resource": "arn:aws:logs:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:log-group:/aws/codebuild/cicd*",
       "Action": [
         "logs:CreateLogStream",
         "logs:PutLogEvents"
@@ -42,8 +42,8 @@
         "s3:PutObject"
       ],
       "Resource": [
-        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}",
-        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}/*"
+        "${aws_s3_bucket_cicd_codepipeline_deployment_bucket_arn}",
+        "${aws_s3_bucket_cicd_codepipeline_deployment_bucket_arn}/*"
       ]
     },
     {
@@ -53,7 +53,7 @@
         "kms:Encrypt",
         "kms:GenerateDataKey"
       ],
-      "Resource": "${data_aws_kms_alias_aft_key_target_key_arn}"
+      "Resource": "${data_aws_kms_alias_cicd_key_target_key_arn}"
     },
     {
       "Effect": "Allow",
@@ -62,7 +62,7 @@
         "ssm:GetParameter"
       ],
       "Resource": [
-        "arn:aws:ssm:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:parameter/aft/*"
+        "arn:aws:ssm:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:parameter/cicd/*"
       ]
     },
     {
@@ -76,7 +76,7 @@
         "codecommit:GetUploadArchiveStatus",
         "codecommit:CancelUploadArchive"
       ],
-      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:*customizations*"
+      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:*"
     },
     {
       "Effect": "Allow",
@@ -93,7 +93,7 @@
         "dynamodb:GetItem"
       ],
         "Resource" : [
-          "arn:aws:dynamodb:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:table/aft*"
+          "arn:aws:dynamodb:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:table/cicd*"
         ]
       }
   ]

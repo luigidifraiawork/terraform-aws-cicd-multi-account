@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 resource "aws_s3_bucket" "cicd_codepipeline_deployment_bucket" {
-  bucket = "aft-customizations-pipeline-${data.aws_caller_identity.current.account_id}"
+  bucket = "cicd-deployment-pipeline-${data.aws_caller_identity.current.account_id}"
 }
 
 resource "aws_s3_bucket_versioning" "cicd_codepipeline_deployment_bucket_versioning" {

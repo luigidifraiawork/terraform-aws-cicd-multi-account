@@ -3,19 +3,19 @@
 #
 resource "aws_codestarconnections_connection" "bitbucket" {
   count         = local.vcs.is_bitbucket ? 1 : 0
-  name          = "ct-aft-bitbucket-connection"
+  name          = "ct-cicd-bitbucket-connection"
   provider_type = "Bitbucket"
 }
 
 resource "aws_codestarconnections_connection" "github" {
   count         = local.vcs.is_github ? 1 : 0
-  name          = "ct-aft-github-connection"
+  name          = "ct-cicd-github-connection"
   provider_type = "GitHub"
 }
 
 resource "aws_codestarconnections_connection" "githubenterprise" {
   count    = local.vcs.is_github_enterprise ? 1 : 0
-  name     = "ct-aft-github-ent-connection"
+  name     = "ct-cicd-github-ent-connection"
   host_arn = aws_codestarconnections_host.githubenterprise[0].arn
 }
 

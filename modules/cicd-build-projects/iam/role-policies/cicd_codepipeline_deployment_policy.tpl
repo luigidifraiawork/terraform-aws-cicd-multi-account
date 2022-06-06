@@ -9,8 +9,8 @@
         "s3:Put*"
       ],
       "Resource": [
-        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}",
-        "${aws_s3_bucket_aft_codepipeline_customizations_bucket_arn}/*"
+        "${aws_s3_bucket_cicd_codepipeline_deployment_bucket_arn}",
+        "${aws_s3_bucket_cicd_codepipeline_deployment_bucket_arn}/*"
       ]
     },
     {
@@ -32,7 +32,7 @@
         "codecommit:GetUploadArchiveStatus",
         "codecommit:CancelUploadArchive"
       ],
-      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:aft-*"
+      "Resource": "arn:aws:codecommit:${data_aws_region_current_name}:${data_aws_caller_identity_current_account_id}:cicd-*"
     },
     {
       "Effect": "Allow",
@@ -41,7 +41,7 @@
         "kms:Encrypt",
         "kms:GenerateDataKey"
       ],
-      "Resource": "${data_aws_kms_alias_aft_key_target_key_arn}"
+      "Resource": "${data_aws_kms_alias_cicd_key_target_key_arn}"
     },
      {
          "Effect": "Allow",

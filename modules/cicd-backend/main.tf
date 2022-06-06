@@ -9,10 +9,10 @@ data "aws_caller_identity" "current" {
 resource "aws_s3_bucket" "primary-backend-bucket" {
   provider = aws.primary_region
 
-  bucket = "aft-backend-${data.aws_caller_identity.current.account_id}-primary-region"
+  bucket = "cicd-backend-${data.aws_caller_identity.current.account_id}-primary-region"
 
   tags = {
-    "Name" = "aft-backend-${data.aws_caller_identity.current.account_id}-primary-region"
+    "Name" = "cicd-backend-${data.aws_caller_identity.current.account_id}-primary-region"
   }
 }
 
@@ -79,9 +79,9 @@ resource "aws_s3_bucket_public_access_block" "primary-backend-bucket" {
 
 resource "aws_s3_bucket" "secondary-backend-bucket" {
   provider = aws.secondary_region
-  bucket   = "aft-backend-${data.aws_caller_identity.current.account_id}-secondary-region"
+  bucket   = "cicd-backend-${data.aws_caller_identity.current.account_id}-secondary-region"
   tags = {
-    "Name" = "aft-backend-${data.aws_caller_identity.current.account_id}-secondary-region"
+    "Name" = "cicd-backend-${data.aws_caller_identity.current.account_id}-secondary-region"
   }
 }
 
@@ -124,7 +124,7 @@ resource "aws_s3_bucket_public_access_block" "secondary-backend-bucket" {
 
 resource "aws_iam_role" "replication" {
   provider = aws.primary_region
-  name     = "aft-s3-terraform-backend-replication"
+  name     = "cicd-s3-terraform-backend-replication"
 
   assume_role_policy = <<POLICY
 {
@@ -144,7 +144,7 @@ POLICY
 
 resource "aws_iam_policy" "replication" {
   provider = aws.primary_region
-  name     = "aft-s3-terraform-backend-replication-policy"
+  name     = "cicd-s3-terraform-backend-replication-policy"
 
   policy = <<POLICY
 {
@@ -258,7 +258,7 @@ resource "aws_iam_role_policy_attachment" "replication" {
 resource "aws_dynamodb_table" "lock-table" {
   provider = aws.primary_region
 
-  name             = "aft-backend-${data.aws_caller_identity.current.account_id}"
+  name             = "cicd-backend-${data.aws_caller_identity.current.account_id}"
   billing_mode     = "PAY_PER_REQUEST"
   hash_key         = "LockID"
   stream_enabled   = true
@@ -273,7 +273,7 @@ resource "aws_dynamodb_table" "lock-table" {
   }
 
   tags = {
-    "Name" = "aft-backend-${data.aws_caller_identity.current.account_id}"
+    "Name" = "cicd-backend-${data.aws_caller_identity.current.account_id}"
   }
 }
 
@@ -287,14 +287,14 @@ resource "aws_kms_key" "encrypt-primary-region" {
   deletion_window_in_days = 30
   enable_key_rotation     = "true"
   tags = {
-    "Name" = "aft-backend-${data.aws_caller_identity.current.account_id}-primary-region-kms-key"
+    "Name" = "cicd-backend-${data.aws_caller_identity.current.account_id}-primary-region-kms-key"
   }
 }
 
 resource "aws_kms_alias" "encrypt-alias-primary-region" {
   provider = aws.primary_region
 
-  name          = "alias/aft-backend-${data.aws_caller_identity.current.account_id}-kms-key"
+  name          = "alias/cicd-backend-${data.aws_caller_identity.current.account_id}-kms-key"
   target_key_id = aws_kms_key.encrypt-primary-region.key_id
 }
 
@@ -305,13 +305,13 @@ resource "aws_kms_key" "encrypt-secondary-region" {
   deletion_window_in_days = 30
   enable_key_rotation     = "true"
   tags = {
-    "Name" = "aft-backend-${data.aws_caller_identity.current.account_id}-secondary-region-kms-key"
+    "Name" = "cicd-backend-${data.aws_caller_identity.current.account_id}-secondary-region-kms-key"
   }
 }
 
 resource "aws_kms_alias" "encrypt-alias-secondary-region" {
   provider = aws.secondary_region
 
-  name          = "alias/aft-backend-${data.aws_caller_identity.current.account_id}-kms-key"
+  name          = "alias/cicd-backend-${data.aws_caller_identity.current.account_id}-kms-key"
   target_key_id = aws_kms_key.encrypt-secondary-region.key_id
 }

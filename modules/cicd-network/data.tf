@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
-data "aws_region" "aft-management" {}
+data "aws_region" "cicd_management" {}
 
 data "aws_availability_zones" "available" {
   state = "available"

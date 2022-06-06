@@ -25,12 +25,12 @@ variable "vcs_provider" {
 variable "cicd_deployment_api_helpers_codebuild_name" {
   type        = string
   description = "CodeBuild Project Name"
-  default     = "aft-account-customizations-api-helpers"
+  default     = "cicd-deployment-api-helpers"
 }
 
 variable "cicd_deployment_terraform_codebuild_name" {
   type        = string
   description = "CodeBuild Project Name"
-  default     = "aft-account-customizations-terraform"
+  default     = "cicd-deployment-terraform"
 }
 

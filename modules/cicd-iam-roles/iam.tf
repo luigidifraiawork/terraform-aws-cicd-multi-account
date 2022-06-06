@@ -8,19 +8,19 @@ data "aws_caller_identity" "cicd_management" {
 resource "aws_iam_role" "cicd_admin_role" {
   provider = aws.cicd_management
   name     = "AWSCICDAdmin"
-  assume_role_policy = templatefile("${path.module}/iam/aft_admin_role_trust_policy.tpl",
+  assume_role_policy = templatefile("${path.module}/iam/cicd_admin_role_trust_policy.tpl",
     {
-      aft_account_id = data.aws_caller_identity.cicd_management.account_id
+      cicd_account_id = data.aws_caller_identity.cicd_management.account_id
     }
   )
 }
 
 resource "aws_iam_role_policy" "cicd_admin_role" {
   provider = aws.cicd_management
-  name     = "aft_admin_role_policy"
+  name     = "cicd-admin-role-policy"
   role     = aws_iam_role.cicd_admin_role.id
 
-  policy = file("${path.module}/iam/aft_admin_role_policy.tpl")
+  policy = file("${path.module}/iam/cicd_admin_role_policy.tpl")
 }
 
 module "cicd_exec_role" {

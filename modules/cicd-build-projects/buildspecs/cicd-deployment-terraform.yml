@@ -8,19 +8,19 @@ phases:
     commands:
       - DEFAULT_PATH=$(pwd)
       - TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-      - AWS_MODULE_SOURCE=$(aws ssm get-parameter --name "/aft/config/aft-pipeline-code-source/repo-url" --query "Parameter.Value" --output text)
-      - AWS_MODULE_GIT_REF=$(aws ssm get-parameter --name "/aft/config/aft-pipeline-code-source/repo-git-ref" --query "Parameter.Value" --output text)
-      - TF_VERSION=$(aws ssm get-parameter --name "/aft/config/terraform/version" --query "Parameter.Value" --output text)
+      - AWS_MODULE_SOURCE=$(aws ssm get-parameter --name "/cicd/config/cicd-framework/repo-url" --query "Parameter.Value" --output text)
+      - AWS_MODULE_GIT_REF=$(aws ssm get-parameter --name "/cicd/config/cicd-framework/repo-git-ref" --query "Parameter.Value" --output text)
+      - TF_VERSION=$(aws ssm get-parameter --name "/cicd/config/terraform/version" --query "Parameter.Value" --output text)
       - TF_DISTRIBUTION=$(aws ssm get-parameter --name "/aft/config/terraform/distribution" --query "Parameter.Value" --output text)
-      - CT_MGMT_REGION=$(aws ssm get-parameter --name "/aft/config/ct-management-region" --query "Parameter.Value" --output text)
-      - AFT_MGMT_ACCOUNT=$(aws ssm get-parameter --name "/aft/account/aft-management/account-id" --query "Parameter.Value" --output text)
+      - CT_MGMT_REGION=$(aws ssm get-parameter --name "/cicd/config/ct-management-region" --query "Parameter.Value" --output text)
+      - AFT_MGMT_ACCOUNT=$(aws ssm get-parameter --name "/cicd/account/cicd-management/account-id" --query "Parameter.Value" --output text)
       - AFT_EXEC_ROLE_ARN=arn:aws:iam::$AFT_MGMT_ACCOUNT:role/AWSCICDExecution
       - VENDED_EXEC_ROLE_ARN=arn:aws:iam::$VENDED_ACCOUNT_ID:role/AWSCICDExecution
       - AFT_ADMIN_ROLE_NAME=$(aws ssm get-parameter --name /aft/resources/iam/aft-administrator-role-name | jq --raw-output ".Parameter.Value")
       - AFT_ADMIN_ROLE_ARN=arn:aws:iam::$AFT_MGMT_ACCOUNT:role/$AFT_ADMIN_ROLE_NAME
       - ROLE_SESSION_NAME=$(aws ssm get-parameter --name /aft/resources/iam/aft-session-name | jq --raw-output ".Parameter.Value")
       - |
-        ssh_key_parameter=$(aws ssm get-parameter --name /aft/config/aft-ssh-key --with-decryption 2> /dev/null || echo "None")
+        ssh_key_parameter=$(aws ssm get-parameter --name /cicd/config/cicd-ssh-key --with-decryption 2> /dev/null || echo "None")
         if [[ $ssh_key_parameter != "None" ]]; then
           ssh_key=$(jq --raw-output ".Parameter.Value" <<< $ssh_key_parameter)
           mkdir -p ~/.ssh
@@ -44,11 +44,11 @@ phases:
         if [ -d "$CUSTOMIZATION" ]; then
           echo "Found customization" $CUSTOMIZATION
           if [ $TF_DISTRIBUTION = "oss" ]; then
-            TF_BACKEND_REGION=$(aws ssm get-parameter --name "/aft/config/oss-backend/primary-region" --query "Parameter.Value" --output text)
-            TF_KMS_KEY_ID=$(aws ssm get-parameter --name "/aft/config/oss-backend/kms-key-id" --query "Parameter.Value" --output text)
-            TF_DDB_TABLE=$(aws ssm get-parameter --name "/aft/config/oss-backend/table-id" --query "Parameter.Value" --output text)
-            TF_S3_BUCKET=$(aws ssm get-parameter --name "/aft/config/oss-backend/bucket-id" --query "Parameter.Value" --output text)
-            TF_S3_KEY=$VENDED_ACCOUNT_ID-aft-account-customizations/terraform.tfstate
+            TF_BACKEND_REGION=$(aws ssm get-parameter --name "/cicd/config/oss-backend/primary-region" --query "Parameter.Value" --output text)
+            TF_KMS_KEY_ID=$(aws ssm get-parameter --name "/cicd/config/oss-backend/kms-key-id" --query "Parameter.Value" --output text)
+            TF_DDB_TABLE=$(aws ssm get-parameter --name "/cicd/config/oss-backend/table-id" --query "Parameter.Value" --output text)
+            TF_S3_BUCKET=$(aws ssm get-parameter --name "/cicd/config/oss-backend/bucket-id" --query "Parameter.Value" --output text)
+            TF_S3_KEY=$VENDED_ACCOUNT_ID-cicd-deployment/terraform.tfstate
             cd /tmp
             echo "Installing Terraform"
             curl -o terraform_${TF_VERSION}_linux_amd64.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
@@ -64,11 +64,11 @@ phases:
             export AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]")
             terraform init
           else
-            TF_BACKEND_REGION=$(aws ssm get-parameter --name "/aft/config/oss-backend/primary-region" --query "Parameter.Value" --output text)
+            TF_BACKEND_REGION=$(aws ssm get-parameter --name "/cicd/config/oss-backend/primary-region" --query "Parameter.Value" --output text)
             TF_ORG_NAME=$(aws ssm get-parameter --name "/aft/config/terraform/org-name" --query "Parameter.Value" --output text)
             TF_TOKEN=$(aws ssm get-parameter --name "/aft/config/terraform/token" --with-decryption --query "Parameter.Value" --output text)
             TF_ENDPOINT=$(aws ssm get-parameter --name "/aft/config/terraform/api-endpoint" --query "Parameter.Value" --output text)
-            TF_WORKSPACE_NAME=$VENDED_ACCOUNT_ID-aft-account-customizations
+            TF_WORKSPACE_NAME=$VENDED_ACCOUNT_ID-cicd-deployment
             TF_CONFIG_PATH="./temp_configuration_file.tar.gz"
             cd $DEFAULT_PATH/$CUSTOMIZATION/terraform
             for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D provider_region=$CT_MGMT_REGION -D tf_distribution_type=$TF_DISTRIBUTION -D aft_admin_role_arn=$AFT_EXEC_ROLE_ARN -D target_admin_role_arn=$VENDED_EXEC_ROLE_ARN -D terraform_org_name=$TF_ORG_NAME -D terraform_workspace_name=$TF_WORKSPACE_NAME  >> ./$(basename $f .jinja).tf; done
