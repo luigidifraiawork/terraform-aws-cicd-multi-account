@@ -15,7 +15,7 @@ phases:
       - CT_MGMT_REGION=$(aws ssm get-parameter --name "/cicd/config/ct-management-region" --query "Parameter.Value" --output text)
       - CICD_MGMT_ACCOUNT=$(aws ssm get-parameter --name "/cicd/account/cicd-management/account-id" --query "Parameter.Value" --output text)
       - CICD_EXEC_ROLE_ARN=arn:aws:iam::$CICD_MGMT_ACCOUNT:role/AWSCICDExecution
-      - VENDED_EXEC_ROLE_ARN=arn:aws:iam::$VENDED_ACCOUNT_ID:role/AWSCICDExecution
+      - ACCOUNT_EXEC_ROLE_ARN=arn:aws:iam::$ACCOUNT_ID:role/AWSCICDExecution
       - CICD_ADMIN_ROLE_NAME=$(aws ssm get-parameter --name /cicd/resources/iam/cicd-administrator-role-name | jq --raw-output ".Parameter.Value")
       - CICD_ADMIN_ROLE_ARN=arn:aws:iam::$CICD_MGMT_ACCOUNT:role/$CICD_ADMIN_ROLE_NAME
       - ROLE_SESSION_NAME=$(aws ssm get-parameter --name /cicd/resources/iam/cicd-session-name | jq --raw-output ".Parameter.Value")
@@ -39,23 +39,23 @@ phases:
       - python3 -m venv ./venv
       - source ./venv/bin/activate
       - pip install jinja2-cli==0.7.0 Jinja2==3.0.1 MarkupSafe==2.0.1 boto3==1.18.56 requests==2.26.0
-      - echo $CUSTOMIZATION
+      - echo $DEPLOYMENT_FOLDER
       - |
-        if [ -d "$CUSTOMIZATION" ]; then
-          echo "Found customization" $CUSTOMIZATION
+        if [ -d "$DEPLOYMENT_FOLDER" ]; then
+          echo "Found customization" $DEPLOYMENT_FOLDER
           if [ $TF_DISTRIBUTION = "oss" ]; then
             TF_BACKEND_REGION=$(aws ssm get-parameter --name "/cicd/config/oss-backend/primary-region" --query "Parameter.Value" --output text)
             TF_KMS_KEY_ID=$(aws ssm get-parameter --name "/cicd/config/oss-backend/kms-key-id" --query "Parameter.Value" --output text)
             TF_DDB_TABLE=$(aws ssm get-parameter --name "/cicd/config/oss-backend/table-id" --query "Parameter.Value" --output text)
             TF_S3_BUCKET=$(aws ssm get-parameter --name "/cicd/config/oss-backend/bucket-id" --query "Parameter.Value" --output text)
-            TF_S3_KEY=$VENDED_ACCOUNT_ID-cicd-deployment/terraform.tfstate
+            TF_S3_KEY=$ACCOUNT_ID-cicd-deployment/terraform.tfstate
             cd /tmp
             echo "Installing Terraform"
             curl -o terraform_${TF_VERSION}_linux_amd64.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
             unzip -o terraform_${TF_VERSION}_linux_amd64.zip && mv terraform /usr/bin
             terraform --version
-            cd $DEFAULT_PATH/$CUSTOMIZATION/terraform
-            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D tf_distribution_type=$TF_DISTRIBUTION -D provider_region=$CT_MGMT_REGION -D region=$TF_BACKEND_REGION -D cicd_admin_role_arn=$CICD_EXEC_ROLE_ARN -D target_admin_role_arn=$VENDED_EXEC_ROLE_ARN -D bucket=$TF_S3_BUCKET -D key=$TF_S3_KEY -D dynamodb_table=$TF_DDB_TABLE -D kms_key_id=$TF_KMS_KEY_ID >> ./$(basename $f .jinja).tf; done
+            cd $DEFAULT_PATH/$DEPLOYMENT_FOLDER/terraform
+            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D tf_distribution_type=$TF_DISTRIBUTION -D provider_region=$CT_MGMT_REGION -D region=$TF_BACKEND_REGION -D cicd_admin_role_arn=$CICD_EXEC_ROLE_ARN -D target_admin_role_arn=$ACCOUNT_EXEC_ROLE_ARN -D bucket=$TF_S3_BUCKET -D key=$TF_S3_KEY -D dynamodb_table=$TF_DDB_TABLE -D kms_key_id=$TF_KMS_KEY_ID >> ./$(basename $f .jinja).tf; done
             for f in *.tf; do echo "\n \n"; echo $f; cat $f; done
             JSON=$(aws sts assume-role --role-arn ${CICD_ADMIN_ROLE_ARN} --role-session-name ${ROLE_SESSION_NAME})
             #Make newly assumed role default session
@@ -68,12 +68,12 @@ phases:
             TF_ORG_NAME=$(aws ssm get-parameter --name "/cicd/config/terraform/org-name" --query "Parameter.Value" --output text)
             TF_TOKEN=$(aws ssm get-parameter --name "/cicd/config/terraform/token" --with-decryption --query "Parameter.Value" --output text)
             TF_ENDPOINT=$(aws ssm get-parameter --name "/cicd/config/terraform/api-endpoint" --query "Parameter.Value" --output text)
-            TF_WORKSPACE_NAME=$VENDED_ACCOUNT_ID-cicd-deployment
+            TF_WORKSPACE_NAME=$ACCOUNT_ID-cicd-deployment
             TF_CONFIG_PATH="./temp_configuration_file.tar.gz"
-            cd $DEFAULT_PATH/$CUSTOMIZATION/terraform
-            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D provider_region=$CT_MGMT_REGION -D tf_distribution_type=$TF_DISTRIBUTION -D cicd_admin_role_arn=$CICD_EXEC_ROLE_ARN -D target_admin_role_arn=$VENDED_EXEC_ROLE_ARN -D terraform_org_name=$TF_ORG_NAME -D terraform_workspace_name=$TF_WORKSPACE_NAME  >> ./$(basename $f .jinja).tf; done
+            cd $DEFAULT_PATH/$DEPLOYMENT_FOLDER/terraform
+            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D provider_region=$CT_MGMT_REGION -D tf_distribution_type=$TF_DISTRIBUTION -D cicd_admin_role_arn=$CICD_EXEC_ROLE_ARN -D target_admin_role_arn=$ACCOUNT_EXEC_ROLE_ARN -D terraform_org_name=$TF_ORG_NAME -D terraform_workspace_name=$TF_WORKSPACE_NAME  >> ./$(basename $f .jinja).tf; done
             for f in *.tf; do echo "\n \n"; echo $f; cat $f; done
-            cd $DEFAULT_PATH/$CUSTOMIZATION
+            cd $DEFAULT_PATH/$DEPLOYMENT_FOLDER
             tar -czf temp_configuration_file.tar.gz -C terraform --exclude .git --exclude venv .
             python3 $DEFAULT_PATH/aws-cicd-core-framework/sources/scripts/workspace_manager.py --operation "deploy" --organization_name $TF_ORG_NAME --workspace_name $TF_WORKSPACE_NAME --assume_role_arn $CICD_ADMIN_ROLE_ARN --assume_role_session_name $ROLE_SESSION_NAME --api_endpoint $TF_ENDPOINT --api_token $TF_TOKEN --terraform_version $TF_VERSION --config_file $TF_CONFIG_PATH
           fi
@@ -82,9 +82,9 @@ phases:
     commands:
       - cd $DEFAULT_PATH
       - |
-        if [ -d "$CUSTOMIZATION" ]; then
+        if [ -d "$DEPLOYMENT_FOLDER" ]; then
           if [ $TF_DISTRIBUTION = "oss" ]; then
-            cd $DEFAULT_PATH/$CUSTOMIZATION/terraform
+            cd $DEFAULT_PATH/$DEPLOYMENT_FOLDER/terraform
             terraform apply --auto-approve
           fi
         fi
