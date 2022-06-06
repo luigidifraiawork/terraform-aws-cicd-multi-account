@@ -29,12 +29,12 @@ output "github_enterprise_url" {
   value = var.github_enterprise_url
 }
 
-output "infrastructure_deployment_repo_name" {
+output "deployment_repo_name" {
   value = var.deployment_repo_name
 }
 
-output "infrastructure_deployment_repo_branch" {
-  value = var.infrastructure_deployment_repo_branch
+output "deployment_repo_branch" {
+  value = var.deployment_repo_branch
 }
 
 #########################################

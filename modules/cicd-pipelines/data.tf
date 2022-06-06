@@ -9,12 +9,12 @@ data "aws_ssm_parameter" "codestar_connection_arn" {
   name = "/cicd/config/vcs/codestar-connection-arn"
 }
 
-data "aws_ssm_parameter" "infrastructure_deployment_repo_name" {
-  name = "/cicd/config/infrastructure-deployment/repo-name"
+data "aws_ssm_parameter" "deployment_repo_name" {
+  name = "/cicd/config/deployment/repo-name"
 }
 
-data "aws_ssm_parameter" "infrastructure_deployment_repo_branch" {
-  name = "/cicd/config/infrastructure-deployment/repo-branch"
+data "aws_ssm_parameter" "deployment_repo_branch" {
+  name = "/cicd/config/deployment/repo-branch"
 }
 
 data "aws_kms_alias" "cicd_key" {

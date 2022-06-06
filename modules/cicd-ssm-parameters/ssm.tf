@@ -97,16 +97,16 @@ resource "aws_ssm_parameter" "cicd_framework_repo_git_ref" {
   value = var.cicd_framework_repo_git_ref
 }
 
-resource "aws_ssm_parameter" "infrastructure_deployment_repo_name" {
-  name  = "/cicd/config/infrastructure-deployment/repo-name"
+resource "aws_ssm_parameter" "deployment_repo_name" {
+  name  = "/cicd/config/deployment/repo-name"
   type  = "String"
-  value = var.infrastructure_deployment_repo_name
+  value = var.deployment_repo_name
 }
 
-resource "aws_ssm_parameter" "infrastructure_deployment_repo_branch" {
-  name  = "/cicd/config/infrastructure-deployment/repo-branch"
+resource "aws_ssm_parameter" "deployment_repo_branch" {
+  name  = "/cicd/config/deployment/repo-branch"
   type  = "String"
-  value = var.infrastructure_deployment_repo_branch
+  value = var.deployment_repo_branch
 }
 
 resource "aws_ssm_parameter" "codestar_connection_arn" {

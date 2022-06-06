@@ -74,11 +74,11 @@ variable "terraform_version" {
   type = string
 }
 
-variable "infrastructure_deployment_repo_name" {
+variable "deployment_repo_name" {
   type = string
 }
 
-variable "infrastructure_deployment_repo_branch" {
+variable "deployment_repo_branch" {
   type = string
 }
 

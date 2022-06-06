@@ -80,29 +80,29 @@ module "cicd_ssm_parameters" {
   providers = {
     aws = aws.cicd_management
   }
-  source                                = "./modules/cicd-ssm-parameters"
-  codestar_connection_arn               = module.cicd_codestar.codestar_connection_arn
-  cicd_config_backend_bucket_id         = module.cicd_backend.bucket_id
-  cicd_config_backend_table_id          = module.cicd_backend.table_id
-  cicd_config_backend_kms_key_id        = module.cicd_backend.kms_key_id
-  cicd_administrator_role_name          = local.cicd_administrator_role_name
-  cicd_execution_role_name              = local.cicd_execution_role_name
-  cicd_session_name                     = local.cicd_session_name
-  cicd_management_account_id            = var.cicd_management_account_id
-  ct_primary_region                     = var.ct_home_region
-  tf_version                            = var.terraform_version
-  tf_distribution                       = var.terraform_distribution
-  terraform_version                     = var.terraform_version
-  vcs_provider                          = var.vcs_provider
-  cicd_config_backend_primary_region    = var.ct_home_region
-  cicd_framework_repo_url               = var.cicd_framework_repo_url
-  cicd_framework_repo_git_ref           = local.cicd_framework_repo_git_ref
-  terraform_token                       = var.terraform_token
-  terraform_api_endpoint                = var.terraform_api_endpoint
-  terraform_org_name                    = var.terraform_org_name
-  infrastructure_deployment_repo_name   = var.deployment_repo_name
-  infrastructure_deployment_repo_branch = var.infrastructure_deployment_repo_branch
-  github_enterprise_url                 = var.github_enterprise_url
+  source                             = "./modules/cicd-ssm-parameters"
+  codestar_connection_arn            = module.cicd_codestar.codestar_connection_arn
+  cicd_config_backend_bucket_id      = module.cicd_backend.bucket_id
+  cicd_config_backend_table_id       = module.cicd_backend.table_id
+  cicd_config_backend_kms_key_id     = module.cicd_backend.kms_key_id
+  cicd_administrator_role_name       = local.cicd_administrator_role_name
+  cicd_execution_role_name           = local.cicd_execution_role_name
+  cicd_session_name                  = local.cicd_session_name
+  cicd_management_account_id         = var.cicd_management_account_id
+  ct_primary_region                  = var.ct_home_region
+  tf_version                         = var.terraform_version
+  tf_distribution                    = var.terraform_distribution
+  terraform_version                  = var.terraform_version
+  vcs_provider                       = var.vcs_provider
+  cicd_config_backend_primary_region = var.ct_home_region
+  cicd_framework_repo_url            = var.cicd_framework_repo_url
+  cicd_framework_repo_git_ref        = local.cicd_framework_repo_git_ref
+  terraform_token                    = var.terraform_token
+  terraform_api_endpoint             = var.terraform_api_endpoint
+  terraform_org_name                 = var.terraform_org_name
+  deployment_repo_name               = var.deployment_repo_name
+  deployment_repo_branch             = var.deployment_repo_branch
+  github_enterprise_url              = var.github_enterprise_url
 }
 
 module "cicd_pipelines" {
@@ -110,7 +110,7 @@ module "cicd_pipelines" {
     aws = aws.cicd_management
   }
   source            = "./modules/cicd-pipelines"
-  for_each          = var.infrastructure_deployment_config
+  for_each          = var.deployment_config
   account_id        = each.value["account_id"]
   deployment_folder = each.value["deployment_folder"]
   vcs_provider      = var.vcs_provider

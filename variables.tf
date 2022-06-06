@@ -98,17 +98,17 @@ variable "deployment_repo_name" {
   default     = "aft-account-customizations"
   validation {
     condition     = length(var.deployment_repo_name) > 0
-    error_message = "Variable var: infrastructure_deployment_repo_name cannot be empty."
+    error_message = "Variable var: deployment_repo_name cannot be empty."
   }
 }
 
-variable "infrastructure_deployment_repo_branch" {
+variable "deployment_repo_branch" {
   description = "Branch to source deployment repo from"
   type        = string
   default     = "main"
   validation {
-    condition     = length(var.infrastructure_deployment_repo_branch) > 0
-    error_message = "Variable var: infrastructure_deployment_repo_branch cannot be empty."
+    condition     = length(var.deployment_repo_branch) > 0
+    error_message = "Variable var: deployment_repo_branch cannot be empty."
   }
 }
 
@@ -116,8 +116,8 @@ variable "infrastructure_deployment_repo_branch" {
 # CICD Per-Account Deployment Variables
 #########################################
 
-variable "infrastructure_deployment_config" {
-  description = "Map of objects for per account infrastructure deployment"
+variable "deployment_config" {
+  description = "Map of objects for per account deployment"
   type = map(object({
     account_id        = string
     deployment_folder = string

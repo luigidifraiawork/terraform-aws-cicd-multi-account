@@ -31,8 +31,8 @@ resource "aws_codepipeline" "cicd_codecommit_deployment_codepipeline" {
       output_artifacts = ["source-cicd-deployment"]
 
       configuration = {
-        RepositoryName       = data.aws_ssm_parameter.infrastructure_deployment_repo_name.value
-        BranchName           = data.aws_ssm_parameter.infrastructure_deployment_repo_branch.value
+        RepositoryName       = data.aws_ssm_parameter.deployment_repo_name.value
+        BranchName           = data.aws_ssm_parameter.deployment_repo_branch.value
         PollForSourceChanges = false
       }
     }
@@ -163,8 +163,8 @@ resource "aws_codepipeline" "cicd_codestar_deployment_codepipeline" {
 
       configuration = {
         ConnectionArn        = data.aws_ssm_parameter.codestar_connection_arn.value
-        FullRepositoryId     = data.aws_ssm_parameter.infrastructure_deployment_repo_name.value
-        BranchName           = data.aws_ssm_parameter.infrastructure_deployment_repo_branch.value
+        FullRepositoryId     = data.aws_ssm_parameter.deployment_repo_name.value
+        BranchName           = data.aws_ssm_parameter.deployment_repo_branch.value
         DetectChanges        = false
         OutputArtifactFormat = "CODE_ZIP"
       }
