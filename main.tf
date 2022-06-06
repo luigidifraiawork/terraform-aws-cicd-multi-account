@@ -6,15 +6,15 @@ module "aft_account_request_framework" {
     aws               = aws.aft_management
   }
   source                                      = "./modules/aft-account-request-framework"
-  aft_vpc_cidr                                = var.aft_vpc_cidr
-  aft_vpc_private_subnet_01_cidr              = var.aft_vpc_private_subnet_01_cidr
-  aft_vpc_private_subnet_02_cidr              = var.aft_vpc_private_subnet_02_cidr
-  aft_vpc_public_subnet_01_cidr               = var.aft_vpc_public_subnet_01_cidr
-  aft_vpc_public_subnet_02_cidr               = var.aft_vpc_public_subnet_02_cidr
-  aft_vpc_endpoints                           = var.aft_vpc_endpoints
+  cicd_vpc_cidr                               = var.cicd_vpc_cidr
+  cicd_vpc_private_subnet_01_cidr             = var.cicd_vpc_private_subnet_01_cidr
+  cicd_vpc_private_subnet_02_cidr             = var.cicd_vpc_private_subnet_02_cidr
+  cicd_vpc_public_subnet_01_cidr              = var.cicd_vpc_public_subnet_01_cidr
+  cicd_vpc_public_subnet_02_cidr              = var.cicd_vpc_public_subnet_02_cidr
+  cicd_vpc_endpoints                          = var.cicd_vpc_endpoints
 }
 
-module "aft_backend" {
+module "cicd_backend" {
   providers = {
     aws.primary_region   = aws.aft_management
     aws.secondary_region = aws.tf_backend_secondary_region
@@ -29,9 +29,9 @@ module "aft_code_repositories" {
     aws = aws.aft_management
   }
   source                                          = "./modules/aft-code-repositories"
-  vpc_id                                          = module.aft_account_request_framework.aft_vpc_id
+  vpc_id                                          = module.aft_account_request_framework.cicd_vpc_id
   security_group_ids                              = module.aft_account_request_framework.aft_vpc_default_sg
-  subnet_ids                                      = module.aft_account_request_framework.aft_vpc_private_subnets
+  subnet_ids                                      = module.aft_account_request_framework.cicd_vpc_private_subnets
   github_enterprise_url                           = var.github_enterprise_url
   vcs_provider                                    = var.vcs_provider
 }
@@ -41,8 +41,8 @@ module "aft_customizations" {
     aws = aws.aft_management
   }
   source                                            = "./modules/aft-customizations"
-  aft_tf_aws_customizations_module_git_ref_ssm_path = local.ssm_paths.aft_tf_aws_customizations_module_git_ref_ssm_path
-  aft_tf_aws_customizations_module_url_ssm_path     = local.ssm_paths.aft_tf_aws_customizations_module_url_ssm_path
+  cicd_framework_repo_git_ref_ssm_path              = local.ssm_paths.cicd_framework_repo_git_ref_ssm_path
+  cicd_framework_repo_url_ssm_path                  = local.ssm_paths.cicd_framework_repo_url_ssm_path
   aft_tf_backend_region_ssm_path                    = local.ssm_paths.aft_tf_backend_region_ssm_path
   aft_tf_ddb_table_ssm_path                         = local.ssm_paths.aft_tf_ddb_table_ssm_path
   aft_tf_kms_key_id_ssm_path                        = local.ssm_paths.aft_tf_kms_key_id_ssm_path
@@ -50,12 +50,12 @@ module "aft_customizations" {
   aft_tf_version_ssm_path                           = local.ssm_paths.aft_tf_version_ssm_path
   aft_kms_key_id                                    = module.aft_account_request_framework.aft_kms_key_id
   aft_kms_key_arn                                   = module.aft_account_request_framework.aft_kms_key_arn
-  aft_vpc_id                                        = module.aft_account_request_framework.aft_vpc_id
-  aft_vpc_private_subnets                           = module.aft_account_request_framework.aft_vpc_private_subnets
+  aft_vpc_id                                        = module.aft_account_request_framework.cicd_vpc_id
+  aft_vpc_private_subnets                           = module.aft_account_request_framework.cicd_vpc_private_subnets
   aft_vpc_default_sg                                = module.aft_account_request_framework.aft_vpc_default_sg
-  aft_config_backend_bucket_id                      = module.aft_backend.bucket_id
-  aft_config_backend_table_id                       = module.aft_backend.table_id
-  aft_config_backend_kms_key_id                     = module.aft_backend.kms_key_id
+  aft_config_backend_bucket_id                      = module.cicd_backend.bucket_id
+  aft_config_backend_table_id                       = module.cicd_backend.table_id
+  aft_config_backend_kms_key_id                     = module.cicd_backend.kms_key_id
   terraform_distribution                            = var.terraform_distribution
   cloudwatch_log_group_retention                    = var.cloudwatch_log_group_retention
   global_codebuild_timeout                          = var.global_codebuild_timeout
@@ -75,26 +75,26 @@ module "aft_ssm_parameters" {
   }
   source                                                      = "./modules/aft-ssm-parameters"
   codestar_connection_arn                                     = module.aft_code_repositories.codestar_connection_arn
-  aft_config_backend_bucket_id                                = module.aft_backend.bucket_id
-  aft_config_backend_table_id                                 = module.aft_backend.table_id
-  aft_config_backend_kms_key_id                               = module.aft_backend.kms_key_id
-  aft_administrator_role_name                                 = local.aft_administrator_role_name
-  aft_execution_role_name                                     = local.aft_execution_role_name
-  aft_session_name                                            = local.aft_session_name
-  aft_management_account_id                                   = var.aft_management_account_id
+  cicd_config_backend_bucket_id                               = module.cicd_backend.bucket_id
+  cicd_config_backend_table_id                                = module.cicd_backend.table_id
+  cicd_config_backend_kms_key_id                              = module.cicd_backend.kms_key_id
+  cicd_administrator_role_name                                = local.cicd_administrator_role_name
+  cicd_execution_role_name                                    = local.cicd_execution_role_name
+  cicd_session_name                                           = local.cicd_session_name
+  cicd_management_account_id                                  = var.cicd_management_account_id
   ct_primary_region                                           = var.ct_home_region
   tf_version                                                  = var.terraform_version
   tf_distribution                                             = var.terraform_distribution
   terraform_version                                           = var.terraform_version
   vcs_provider                                                = var.vcs_provider
   aft_config_backend_primary_region                           = var.ct_home_region
-  aft_framework_repo_url                                      = var.aft_framework_repo_url
-  aft_framework_repo_git_ref                                  = local.aft_framework_repo_git_ref
+  cicd_framework_repo_url                                     = var.cicd_framework_repo_url
+  cicd_framework_repo_git_ref                                 = local.cicd_framework_repo_git_ref
   terraform_token                                             = var.terraform_token
   terraform_api_endpoint                                      = var.terraform_api_endpoint
   terraform_org_name                                          = var.terraform_org_name
-  account_customizations_repo_name                            = var.account_customizations_repo_name
-  account_customizations_repo_branch                          = var.account_customizations_repo_branch
+  infrastructure_deployment_repo_name                         = var.infrastructure_deployment_repo_name
+  infrastructure_deployment_repo_branch                       = var.infrastructure_deployment_repo_branch
   github_enterprise_url                                       = var.github_enterprise_url
 }
 
@@ -103,7 +103,7 @@ module "aft_pipelines" {
     aws = aws.aft_management
   }
   source                = "./modules/aft-pipelines"
-  for_each              = var.account_customizations_config
+  for_each              = var.infrastructure_deployment_config
   account_id            = each.value["account_id"]
   customizations_folder = each.value["customizations_folder"]
   vcs_provider          = var.vcs_provider

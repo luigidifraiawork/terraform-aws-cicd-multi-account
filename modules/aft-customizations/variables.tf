@@ -29,11 +29,11 @@ variable "aft_tf_version_ssm_path" {
   type = string
 }
 
-variable "aft_tf_aws_customizations_module_url_ssm_path" {
+variable "cicd_framework_repo_url_ssm_path" {
   type = string
 }
 
-variable "aft_tf_aws_customizations_module_git_ref_ssm_path" {
+variable "cicd_framework_repo_git_ref_ssm_path" {
   type = string
 }
 

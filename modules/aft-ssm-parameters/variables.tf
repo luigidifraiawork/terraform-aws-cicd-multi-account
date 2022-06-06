@@ -5,7 +5,7 @@ variable "vcs_provider" {
   type = string
 }
 
-variable "aft_management_account_id" {
+variable "cicd_management_account_id" {
   type = string
 }
 
@@ -34,19 +34,19 @@ variable "terraform_org_name" {
   type = string
 }
 
-variable "aft_execution_role_name" {
+variable "cicd_execution_role_name" {
   type = string
 }
 
-variable "aft_administrator_role_name" {
+variable "cicd_administrator_role_name" {
   type = string
 }
 
-variable "aft_session_name" {
+variable "cicd_session_name" {
   type = string
 }
 
-variable "aft_config_backend_bucket_id" {
+variable "cicd_config_backend_bucket_id" {
   type = string
 }
 
@@ -54,19 +54,19 @@ variable "aft_config_backend_primary_region" {
   type = string
 }
 
-variable "aft_config_backend_kms_key_id" {
+variable "cicd_config_backend_kms_key_id" {
   type = string
 }
 
-variable "aft_config_backend_table_id" {
+variable "cicd_config_backend_table_id" {
   type = string
 }
 
-variable "aft_framework_repo_url" {
+variable "cicd_framework_repo_url" {
   type = string
 }
 
-variable "aft_framework_repo_git_ref" {
+variable "cicd_framework_repo_git_ref" {
   type = string
 }
 
@@ -74,11 +74,11 @@ variable "terraform_version" {
   type = string
 }
 
-variable "account_customizations_repo_name" {
+variable "infrastructure_deployment_repo_name" {
   type = string
 }
 
-variable "account_customizations_repo_branch" {
+variable "infrastructure_deployment_repo_branch" {
   type = string
 }
 

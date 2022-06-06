@@ -6,7 +6,7 @@
 #########################################
 
 output "aft_management_account_id" {
-  value = var.aft_management_account_id
+  value = var.cicd_management_account_id
 }
 
 output "ct_home_region" {
@@ -29,12 +29,12 @@ output "github_enterprise_url" {
   value = var.github_enterprise_url
 }
 
-output "account_customizations_repo_name" {
-  value = var.account_customizations_repo_name
+output "infrastructure_deployment_repo_name" {
+  value = var.infrastructure_deployment_repo_name
 }
 
-output "account_customizations_repo_branch" {
-  value = var.account_customizations_repo_branch
+output "infrastructure_deployment_repo_branch" {
+  value = var.infrastructure_deployment_repo_branch
 }
 
 #########################################
@@ -62,25 +62,25 @@ output "terraform_api_endpoint" {
 }
 
 #########################################
-# AFT VPC Variables
+# CICD VPC Variables
 #########################################
 
-output "aft_vpc_cidr" {
-  value = var.aft_vpc_cidr
+output "cicd_vpc_cidr" {
+  value = var.cicd_vpc_cidr
 }
 
-output "aft_vpc_private_subnet_01_cidr" {
-  value = var.aft_vpc_private_subnet_01_cidr
+output "cicd_vpc_private_subnet_01_cidr" {
+  value = var.cicd_vpc_private_subnet_01_cidr
 }
 
-output "aft_vpc_private_subnet_02_cidr" {
-  value = var.aft_vpc_private_subnet_02_cidr
+output "cicd_vpc_private_subnet_02_cidr" {
+  value = var.cicd_vpc_private_subnet_02_cidr
 }
 
-output "aft_vpc_public_subnet_01_cidr" {
-  value = var.aft_vpc_public_subnet_01_cidr
+output "cicd_vpc_public_subnet_01_cidr" {
+  value = var.cicd_vpc_public_subnet_01_cidr
 }
 
-output "aft_vpc_public_subnet_02_cidr" {
-  value = var.aft_vpc_public_subnet_02_cidr
+output "cicd_vpc_public_subnet_02_cidr" {
+  value = var.cicd_vpc_public_subnet_02_cidr
 }

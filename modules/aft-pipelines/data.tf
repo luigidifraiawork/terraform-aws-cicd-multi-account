@@ -9,11 +9,11 @@ data "aws_ssm_parameter" "codestar_connection_arn" {
   name = "/aft/config/vcs/codestar-connection-arn"
 }
 
-data "aws_ssm_parameter" "aft_account_customizations_repo_name" {
+data "aws_ssm_parameter" "infrastructure_deployment_repo_name" {
   name = "/aft/config/account-customizations/repo-name"
 }
 
-data "aws_ssm_parameter" "aft_account_customizations_repo_branch" {
+data "aws_ssm_parameter" "infrastructure_deployment_repo_branch" {
   name = "/aft/config/account-customizations/repo-branch"
 }
 

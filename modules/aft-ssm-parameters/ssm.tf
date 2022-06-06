@@ -7,10 +7,10 @@ resource "aws_ssm_parameter" "vcs_provider" {
   value = var.vcs_provider
 }
 
-resource "aws_ssm_parameter" "aft_management_account_id" {
+resource "aws_ssm_parameter" "cicd_management_account_id" {
   name  = "/aft/account/aft-management/account-id"
   type  = "String"
-  value = var.aft_management_account_id
+  value = var.cicd_management_account_id
 }
 
 resource "aws_ssm_parameter" "ct_primary_region" {
@@ -49,28 +49,28 @@ resource "aws_ssm_parameter" "terraform_org_name" {
   value = var.terraform_org_name
 }
 
-resource "aws_ssm_parameter" "aft_execution_role_name" {
+resource "aws_ssm_parameter" "cicd_execution_role_name" {
   name  = "/aft/resources/iam/aft-execution-role-name"
   type  = "String"
-  value = var.aft_execution_role_name
+  value = var.cicd_execution_role_name
 }
 
-resource "aws_ssm_parameter" "aft_administrator_role_name" {
+resource "aws_ssm_parameter" "cicd_administrator_role_name" {
   name  = "/aft/resources/iam/aft-administrator-role-name"
   type  = "String"
-  value = var.aft_administrator_role_name
+  value = var.cicd_administrator_role_name
 }
 
-resource "aws_ssm_parameter" "aft_session_name" {
+resource "aws_ssm_parameter" "cicd_session_name" {
   name  = "/aft/resources/iam/aft-session-name"
   type  = "String"
-  value = var.aft_session_name
+  value = var.cicd_session_name
 }
 
-resource "aws_ssm_parameter" "aft_config_backend_bucket_id" {
+resource "aws_ssm_parameter" "cicd_config_backend_bucket_id" {
   name  = "/aft/config/oss-backend/bucket-id"
   type  = "String"
-  value = var.aft_config_backend_bucket_id
+  value = var.cicd_config_backend_bucket_id
 }
 
 resource "aws_ssm_parameter" "aft_config_backend_primary_region" {
@@ -79,40 +79,40 @@ resource "aws_ssm_parameter" "aft_config_backend_primary_region" {
   value = var.aft_config_backend_primary_region
 }
 
-resource "aws_ssm_parameter" "aft_config_backend_kms_key_id" {
+resource "aws_ssm_parameter" "cicd_config_backend_kms_key_id" {
   name  = "/aft/config/oss-backend/kms-key-id"
   type  = "String"
-  value = var.aft_config_backend_kms_key_id
+  value = var.cicd_config_backend_kms_key_id
 }
 
-resource "aws_ssm_parameter" "aft_config_backend_table_id" {
+resource "aws_ssm_parameter" "cicd_config_backend_table_id" {
   name  = "/aft/config/oss-backend/table-id"
   type  = "String"
-  value = var.aft_config_backend_table_id
+  value = var.cicd_config_backend_table_id
 }
 
-resource "aws_ssm_parameter" "aft_framework_repo_url" {
+resource "aws_ssm_parameter" "cicd_framework_repo_url" {
   name  = "/aft/config/aft-pipeline-code-source/repo-url"
   type  = "String"
-  value = var.aft_framework_repo_url
+  value = var.cicd_framework_repo_url
 }
 
-resource "aws_ssm_parameter" "aft_framework_repo_git_ref" {
+resource "aws_ssm_parameter" "cicd_framework_repo_git_ref" {
   name  = "/aft/config/aft-pipeline-code-source/repo-git-ref"
   type  = "String"
-  value = var.aft_framework_repo_git_ref
+  value = var.cicd_framework_repo_git_ref
 }
 
-resource "aws_ssm_parameter" "account_customizations_repo_name" {
+resource "aws_ssm_parameter" "infrastructure_deployment_repo_name" {
   name  = "/aft/config/account-customizations/repo-name"
   type  = "String"
-  value = var.account_customizations_repo_name
+  value = var.infrastructure_deployment_repo_name
 }
 
-resource "aws_ssm_parameter" "account_customizations_repo_branch" {
+resource "aws_ssm_parameter" "infrastructure_deployment_repo_branch" {
   name  = "/aft/config/account-customizations/repo-branch"
   type  = "String"
-  value = var.account_customizations_repo_branch
+  value = var.infrastructure_deployment_repo_branch
 }
 
 resource "aws_ssm_parameter" "codestar_connection_arn" {
