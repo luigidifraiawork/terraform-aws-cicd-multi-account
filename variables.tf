@@ -95,7 +95,7 @@ variable "github_enterprise_url" {
 variable "deployment_repo_name" {
   description = "Repository name for the deployment files. For non-CodeCommit repos, name should be in the format of Org/Repo"
   type        = string
-  default     = "aft-account-customizations"
+  default     = "infrastructure-deployment"
   validation {
     condition     = length(var.deployment_repo_name) > 0
     error_message = "Variable var: deployment_repo_name cannot be empty."
